@@ -71,7 +71,7 @@ class UserController extends Controller
             'phone_number' => 'required|min:9|numeric',
             'profile' => 'required|max:500|min:4',
             'image' => 'required|mimetypes:image/jpeg,image/png|max:2048',
-            'email' => 'required|unique:email|email:rfc,dns',
+            'email' => 'required|email:rfc,dns',
             'password' => 'required|max:100|min:4',
 
         ];
@@ -114,7 +114,9 @@ class UserController extends Controller
 
         if (isset($user[0]['email'])) { //có dữ liệu
             // dd($user);
-            return redirect()->back()->with('erros', 'Email đã tồn tại !');
+            $validator = $request->validate([
+                'email' => 'unique:email',
+            ]);
         }
 
         $pathAvatar = $request->file('image')->store('public/users');

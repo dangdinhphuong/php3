@@ -52,7 +52,8 @@
                 <th>Hình ảnh</th>
                 <th>Giá gốc</th>
                 <th>Giá cạnh tranh</th>
-                <th>Giảm giá (%)</th>
+                <th>Giá bán khi giảm giá</th>
+                <th>Giảm giá (%)</th>              
                 <th>Hành động</th>
             </thead>
             <tbody>
@@ -67,6 +68,7 @@
                     </td>
                     <td>{{ $m->price }}</td>
                     <td>{{ $m->competitive_price }}</td>
+                    <td>{{ $m->competitive_price_last_sale }}</td>
                     <td>{{ $m->discount }}</td>
                     <td>
                         <a href="{{ route('admin.products.edit', ['id'=>$m->id])}}" class="btn btn-warning">Sửa</a>

@@ -160,7 +160,7 @@
                     <div class="product-sec1 col-md-12 mb-4 px-sm-4 px-3 py-sm-5  py-3">
                         <h3 class="heading-tittle text-center font-italic">Sản phẩm hot</h3>
                         <div class="row">
-                            @for($i=0;$i<$products_DT->count();$i++)
+                            @for($i=0;$i<count($products_DT);$i++)
                             <div class="col-md-3 product-men mt-5">
                                 <div class="men-pro-item simpleCart_shelfItem">
                                     <div class="men-thumb-item text-center"style="height: 200px;">
@@ -174,11 +174,13 @@
                                     <div class="item-info-product text-center border-top mt-4">
                                         <div class="d-flex  flex-column bd-highlight mb-3" style="height: 200px;">
                                             <h4 class="mb-auto  p-2 bd-highlight"> <a href="single.html">{{$products_DT[$i]->name}}</a></h4>
-                                            <div class="p-2 pl-2 bd-highlight info-product-price">
-                                                <span class="item_price">{{$products_DT[$i]->competitive_price}}</span>
-                                                <del style="
-                                                font-size: 11px;
-                                            ">{{$products_DT[$i]->price}}</del>
+                                            <div class="p-2 pl-2 bd-highlight info-product-price" style="text-align: center">
+                                                <span class="item_price" style="font-weight: bold;text-align: center;">{{$products_DT[$i]->competitive_price_last_sale}}</span><br>
+                                                @if($products_DT[$i]->discounts!==0)
+                                                <del style="text-align: center;font-size: 15px; ">{{$products_DT[$i]->competitive_price}}</del>
+                                                @else 
+                                                <br>
+                                                 @endif                                           
                                             </div>
                                             <div class="p-2 bd-highlight snipcart-details  top_brand_home_details item_add single-item hvr-outline-out">
                                                 <form action="#" method="post">
@@ -187,7 +189,7 @@
                                                         <input type="hidden" name="add" value="1" />
                                                         <input type="hidden" name="business" value=" " />
                                                         <input type="hidden" name="item_name" value="{{$products_DT[$i]->name}}" />
-                                                        <input type="hidden" name="amount" value="{{$products_DT[$i]->competitive_price}}" />
+                                                        <input type="hidden" name="amount" value="{{$products_DT[$i]->competitive_price_last_sale}}" />
                                                         <input type="hidden" name="discount_amount" value="1.00" />
                                                         <input type="hidden" name="currency_code" value="USD" />
                                                         <input type="hidden" name="return" value=" " />
@@ -220,7 +222,7 @@
                     <div class="product-sec1 px-sm-4 px-3 py-sm-5  py-3 mb-4">
                         <h3 class="heading-tittle text-center font-italic">Sale cực mạnh</h3>
                         <div class="row">
-                            @for($i=0;$i<$products_sales->count();$i++)
+                            @for($i=0;$i<count($products_sales);$i++)
                             <div class="col-md-3 product-men mt-5">
                                 <div class="men-pro-item simpleCart_shelfItem">
                                     <div class="men-thumb-item text-center"style="height: 200px;">

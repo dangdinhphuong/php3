@@ -54,8 +54,9 @@ class ProductController extends Controller
                 return $request->keyword ? $query->from('products')->where('name', 'like', "%$request->keyword%") : '';
             })
             ->orderBy('updated_at', 'DESC')->paginate(10);
-
-
+foreach($products as $product){
+    $product['competitive_price_last_sale']=0;
+}
 
         $data["searchKeyword"] = $request->searchKeyword;
         $data["category_id"] = $request->category_id;
@@ -64,7 +65,8 @@ class ProductController extends Controller
         $categories = DB::table('categories')->get();
         $data["categories"] = $categories;
         $data["branches"] = $branch;
-        // dd($products[0]->price);
+       
+    //    dd($products[3]);
         return view('admin.pages.products.index', compact('products'), $data);
     }
 

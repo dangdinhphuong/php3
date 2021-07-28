@@ -91,9 +91,9 @@ Route::name('admin.')->prefix('admin/', )->group(function () {
     });
 });
 
-Route::get('test', function () {
-    return view('client.pages.home');
-})->name("/");
+Route::get('test', function () {  return view('client.pages.home');
+  })->name("/");
+
 Route::get('/', 'frontend\HomeController@index')->name('home');
 
 

@@ -9,6 +9,7 @@ class Product extends Model
 {
     use HasFactory;
     // protected $table = 'products';
+    protected $with="categories";
     protected $fillable = [
         'name',
         'price',
@@ -33,6 +34,7 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class, 'categories_products', 'product_id','cate_id');
     }
+    
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id');
@@ -48,8 +50,20 @@ class Product extends Model
         $competitive_price =number_format($this->attributes['competitive_price'], 0, '', ',') . ' VNĐ';
         return $competitive_price;
     }
+    public function getCompetitivePriceLastSaleAttribute() {
+        $competitive_priceLastSale =number_format($this->attributes['competitive_price'], 0, '', ',') . ' VNĐ';
+        if($this->attributes['discount']>=1){
+            $competitive_priceLastSale=$this->attributes['competitive_price']-(($this->attributes['discount']/100)*$this->attributes['competitive_price']);
+            $competitive_priceLastSale =number_format($competitive_priceLastSale, 0, '', ',') . ' VNĐ';
+        }
+        return $competitive_priceLastSale;
+    }
     public function getDiscountAttribute() {
         $discount ="- ".$this->attributes['discount']. ' %';
         return $discount;
+    }
+    public function getDiscountsAttribute() {
+        $discounts =$this->attributes['discount'];
+        return $discounts;
     }
 }
