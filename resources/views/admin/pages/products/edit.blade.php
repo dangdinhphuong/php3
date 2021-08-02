@@ -99,8 +99,8 @@
                     </div>
                     @enderror
                     <div class="form-group">
-                        <label for="price">Giá</label>
-                        <input value="{{ $model->price }}" type="number" id="price" name="price" class="form-control"
+                        <label for="price">Giá mua</label>
+                        <input value="{{ $model->prices }}" type="number" id="price" name="price" class="form-control"
                             require>
                     </div>
                     @error('price')
@@ -109,8 +109,8 @@
                     </div>
                     @enderror
                     <div class="form-group">
-                        <label for="competitive_price">Giá cạnh tranh</label>
-                        <input value="{{ $model->competitive_price }}" type="number" id="competitive_price"
+                        <label for="competitive_price">Giá bán</label>
+                        <input value="{{ $model->competitive_prices }}" type="number" id="competitive_price"
                             name="competitive_price" class="form-control" require>
                     </div>
                     @error('competitive_price')
@@ -120,7 +120,7 @@
                     @enderror
                     <div class="form-group">
                         <label for="discount">Khuyến mại (%)</label>
-                        <input value="{{ $model->discount }}" type="number" id="discount" name="discount"class="form-control" require>
+                        <input value="{{ $model->discounts }}" type="number" id="discount" name="discount"class="form-control" require>
                             
                     </div>
                     @error('discount')

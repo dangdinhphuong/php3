@@ -62,6 +62,14 @@ class Product extends Model
         $discount ="- ".$this->attributes['discount']. ' %';
         return $discount;
     }
+    public function getCompetitivePricesAttribute() {
+        $competitive_prices =$this->attributes['competitive_price'];
+        return $competitive_prices;
+    }
+    public function getPricesAttribute() {
+        $prices =$this->attributes['price'];
+        return $prices;
+    }
     public function getDiscountsAttribute() {
         $discounts =$this->attributes['discount'];
         return $discounts;

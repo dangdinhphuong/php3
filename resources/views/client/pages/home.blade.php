@@ -1,105 +1,58 @@
 @extends('client.layout')
 @section('title', "Cửa hàng điện tử")
+@section('navigation')
+<li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{config('categories.cate.status.1')}}
+    </a>
+    <div class="dropdown-menu">
+        <div class="agile_inner_drop_nav_info p-4">
+            <h5 class="mb-3">Điện thoại di động, Máy tính</h5>
+            <div class="row">
+                <div class="col-sm-12 multi-gd-img">
+                    <ul class="multi-column-dropdown">
+                        @foreach($categories as $categorie)
+                        @if($categorie->status==1)
+                        <li class="float-left mr-4">
+                            <a href="{{$categorie->slug}}">{{$categorie->name}}</a>
+                        </li>
+                        @endif
+                    @endforeach
+                    </ul>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</li>
+
+<li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{config('categories.cate.status.0')}}
+    </a>
+    <div class="dropdown-menu">
+        <div class="agile_inner_drop_nav_info p-4">
+            <h5 class="mb-3">TV, Thiết bị, Điện tử</h5>
+            <div class="row">
+                <div class="col-sm-12 multi-gd-img">
+                    <ul class="multi-column-dropdown">
+                        @foreach($categories as $categorie)
+                        @if($categorie->status==0)
+                        <li class="float-left mr-4">
+                            <a href="{{$categorie->slug}}">{{$categorie->name}}</a>
+                        </li>
+                        @endif
+                    @endforeach
+                    </ul>
+                </div>
+              
+            </div>
+        </div>
+    </div>
+</li>
+@endsection
 @section('content')
 
-
-<!-- navigation -->
-<div class="navbar-inner">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <!-- <div class="agileits-navi_search">
-                <form action="#" method="post">
-                  
-                </form>
-            </div> -->
-          
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto text-center col-md-12">
-                    <li class="nav-item active mr-lg-2 mb-lg-0 mb-2">
-                        <a class="nav-link" href="{{route('/')}}">Trang chủ
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{config('categories.cate.status.1')}}
-                        </a>
-                        <div class="dropdown-menu">
-                            <div class="agile_inner_drop_nav_info p-4">
-                                <h5 class="mb-3">Điện thoại di động, Máy tính</h5>
-                                <div class="row">
-                                    <div class="col-sm-12 multi-gd-img">
-                                        <ul class="multi-column-dropdown">
-                                            @foreach($categories as $categorie)
-                                            @if($categorie->status==1)
-                                            <li class="float-left mr-4">
-                                                <a href="{{$categorie->slug}}">{{$categorie->name}}</a>
-                                            </li>
-                                            @endif
-                                        @endforeach
-                                        </ul>
-                                    </div>
-                                   
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{config('categories.cate.status.0')}}
-                        </a>
-                        <div class="dropdown-menu">
-                            <div class="agile_inner_drop_nav_info p-4">
-                                <h5 class="mb-3">TV, Thiết bị, Điện tử</h5>
-                                <div class="row">
-                                    <div class="col-sm-12 multi-gd-img">
-                                        <ul class="multi-column-dropdown">
-                                            @foreach($categories as $categorie)
-                                            @if($categorie->status==0)
-                                            <li class="float-left mr-4">
-                                                <a href="{{$categorie->slug}}">{{$categorie->name}}</a>
-                                            </li>
-                                            @endif
-                                        @endforeach
-                                        </ul>
-                                    </div>
-                                  
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                        <a class="nav-link" href="about.html">About Us</a>
-                    </li>
-                    <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                        <a class="nav-link" href="product.html">New Arrivals</a>
-                    </li>
-                    <li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Pages
-                        </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="product.html">Product 1</a>
-                            <a class="dropdown-item" href="product2.html">Product 2</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="single.html">Single Product 1</a>
-                            <a class="dropdown-item" href="single2.html">Single Product 2</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="checkout.html">Checkout Page</a>
-                            <a class="dropdown-item" href="payment.html">Payment Page</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Liên hệ với chúng tôi</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-</div>
-<!-- //navigation -->
 
 <!-- banner -->
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -220,26 +173,30 @@
                     <!-- //first section -->
                     <!-- second section -->
                     <div class="product-sec1 px-sm-4 px-3 py-sm-5  py-3 mb-4">
-                        <h3 class="heading-tittle text-center font-italic">Sale cực mạnh</h3>
-                        <div class="row">
-                            @for($i=0;$i<count($products_sales);$i++)
+                        <h3 class="heading-tittle text-center font-italic">Sale cực mạnh</h3>                       
+                       <div class="row">
+                            @foreach($products_sales as $products_sale)
                             <div class="col-md-3 product-men mt-5">
                                 <div class="men-pro-item simpleCart_shelfItem">
                                     <div class="men-thumb-item text-center"style="height: 200px;">
-                                        <img src="{{asset('storage/'.$products_sales[$i]->image)}}" alt="" style="width: 200px;">
+                                        <img src="{{asset('storage/'.$products_sale->image)}}" alt="" style="width: 200px;">
                                         <div class="men-cart-pro">
                                             <div class="inner-men-cart-pro">
                                                 <a href="single.html" class="link-product-add-cart">Xem sản phẩm</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="product-new-top">{{$products_sales[$i]->discount}}</span>
+                                    <span class="product-new-top">{{$products_sale->discount}}</span>
                                     <div class="item-info-product text-center border-top mt-4">
                                         <div class="d-flex  flex-column bd-highlight mb-3" style="height: 200px;">
-                                            <h4 class="mb-auto  p-2 bd-highlight"> <a href="single.html">{{$products_sales[$i]->name}}</a></h4>
-                                            <div class="p-2 pl-2 bd-highlight info-product-price">
-                                                <span class="item_price">{{$products_sales[$i]->competitive_price}}</span>
-                                                <del>{{$products_sales[$i]->price}}</del>
+                                            <h4 class="mb-auto  p-2 bd-highlight"> <a href="single.html">{{$products_sale->name}}</a></h4>
+                                            <div class="p-2 pl-2 bd-highlight info-product-price" style="text-align: center">
+                                                <span class="item_price" style="font-weight: bold;text-align: center;">{{$products_sale->competitive_price_last_sale}}</span><br>
+                                                @if($products_sale->discounts!==0)
+                                                <del style="text-align: center;font-size: 15px; ">{{$products_sale->competitive_price}}</del>
+                                                @else 
+                                                <br>
+                                                 @endif                                           
                                             </div>
                                             <div class="p-2 bd-highlight snipcart-details  top_brand_home_details item_add single-item hvr-outline-out">
                                                 <form action="#" method="post">
@@ -247,8 +204,8 @@
                                                         <input type="hidden" name="cmd" value="_cart" />
                                                         <input type="hidden" name="add" value="1" />
                                                         <input type="hidden" name="business" value=" " />
-                                                        <input type="hidden" name="item_name" value="{{$products_sales[$i]->name}}" />
-                                                        <input type="hidden" name="amount" value="{{$products_sales[$i]->competitive_price}}" />
+                                                        <input type="hidden" name="item_name" value="{{$products_sale->name}}" />
+                                                        <input type="hidden" name="amount" value="{{$products_sale->competitive_price_last_sale}}" />
                                                         <input type="hidden" name="discount_amount" value="1.00" />
                                                         <input type="hidden" name="currency_code" value="USD" />
                                                         <input type="hidden" name="return" value=" " />
@@ -262,7 +219,7 @@
                                 </div>
                             </div>
                             
-                            @endfor
+                            @endforeach
                         </div>
                     </div>
                     <!-- //second section -->
@@ -279,122 +236,53 @@
                     <!-- //third section -->
                     <!-- fourth section -->
                     <div class="product-sec1 px-sm-4 px-3 py-sm-5  py-3 mt-4">
-                        <h3 class="heading-tittle text-center font-italic">Large Appliances</h3>
+                        <h3 class="heading-tittle text-center font-italic">Điện gia dụng</h3>
                         <div class="row">
-                            <div class="col-md-4 product-men mt-5">
+                            @foreach($products_DDG as $products_DDGS)
+                            <div class="col-md-3 product-men mt-5">
                                 <div class="men-pro-item simpleCart_shelfItem">
-                                    <div class="men-thumb-item text-center">
-                                        <img src="{{asset('asset_fe/images/m7.jpg')}}" alt="">
+                                    <div class="men-thumb-item text-center"style="height: 200px;">
+                                        <img src="{{asset('storage/'.$products_DDGS->image)}}" alt="" style="width: 200px;">
                                         <div class="men-cart-pro">
                                             <div class="inner-men-cart-pro">
-                                                <a href="single.html" class="link-product-add-cart">Quick View</a>
+                                                <a href="single.html" class="link-product-add-cart">Xem sản phẩm</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="product-new-top">New</span>
+                                    <span class="product-new-top">{{$products_DDGS->discount}}</span>
                                     <div class="item-info-product text-center border-top mt-4">
-                                        <h4 class="pt-1">
-                                            <a href="single.html">Whirlpool 245</a>
-                                        </h4>
-                                        <div class="info-product-price my-2">
-                                            <span class="item_price">$230.00</span>
-                                            <del>$280.00</del>
-                                        </div>
-                                        <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                                            <form action="#" method="post">
-                                                <fieldset>
-                                                    <input type="hidden" name="cmd" value="_cart" />
-                                                    <input type="hidden" name="add" value="1" />
-                                                    <input type="hidden" name="business" value=" " />
-                                                    <input type="hidden" name="item_name" value="Whirlpool 245" />
-                                                    <input type="hidden" name="amount" value="230.00" />
-                                                    <input type="hidden" name="discount_amount" value="1.00" />
-                                                    <input type="hidden" name="currency_code" value="USD" />
-                                                    <input type="hidden" name="return" value=" " />
-                                                    <input type="hidden" name="cancel_return" value=" " />
-                                                    <input type="submit" name="submit" value="Add to cart" class="button btn" />
-                                                </fieldset>
-                                            </form>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 product-men mt-5">
-                                <div class="men-pro-item simpleCart_shelfItem">
-                                    <div class="men-thumb-item text-center">
-                                        <img src="{{asset('asset_fe/images/m8.jpg')}}" alt="">
-                                        <div class="men-cart-pro">
-                                            <div class="inner-men-cart-pro">
-                                                <a href="single.html" class="link-product-add-cart">Quick View</a>
+                                        <div class="d-flex  flex-column bd-highlight mb-3" style="height: 200px;">
+                                            <h4 class="mb-auto  p-2 bd-highlight"> <a href="single.html">{{$products_DDGS->name}}</a></h4>
+                                            <div class="p-2 pl-2 bd-highlight info-product-price" style="text-align: center">
+                                                <span class="item_price" style="font-weight: bold;text-align: center;">{{$products_DDGS->competitive_price_last_sale}}</span><br>
+                                                @if($products_DDGS->discounts!==0)
+                                                <del style="text-align: center;font-size: 15px; ">{{$products_DDGS->competitive_price}}</del>
+                                                @else 
+                                                <br>
+                                                 @endif                                           
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="item-info-product text-center border-top mt-4">
-                                        <h4 class="pt-1">
-                                            <a href="single.html">BPL Washing Machine</a>
-                                        </h4>
-                                        <div class="info-product-price my-2">
-                                            <span class="item_price">$180.00</span>
-                                            <del>$200.00</del>
-                                        </div>
-                                        <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                                            <form action="#" method="post">
-                                                <fieldset>
-                                                    <input type="hidden" name="cmd" value="_cart" />
-                                                    <input type="hidden" name="add" value="1" />
-                                                    <input type="hidden" name="business" value=" " />
-                                                    <input type="hidden" name="item_name" value="BPL Washing Machine" />
-                                                    <input type="hidden" name="amount" value="180.00" />
-                                                    <input type="hidden" name="discount_amount" value="1.00" />
-                                                    <input type="hidden" name="currency_code" value="USD" />
-                                                    <input type="hidden" name="return" value=" " />
-                                                    <input type="hidden" name="cancel_return" value=" " />
-                                                    <input type="submit" name="submit" value="Add to cart" class="button btn" />
-                                                </fieldset>
-                                            </form>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 product-men mt-5">
-                                <div class="men-pro-item simpleCart_shelfItem">
-                                    <div class="men-thumb-item text-center">
-                                        <img src="{{asset('asset_fe/images/m9.jpg')}}" alt="">
-                                        <div class="men-cart-pro">
-                                            <div class="inner-men-cart-pro">
-                                                <a href="single.html" class="link-product-add-cart">Quick View</a>
+                                            <div class="p-2 bd-highlight snipcart-details  top_brand_home_details item_add single-item hvr-outline-out">
+                                                <form action="#" method="post">
+                                                    <fieldset>
+                                                        <input type="hidden" name="cmd" value="_cart" />
+                                                        <input type="hidden" name="add" value="1" />
+                                                        <input type="hidden" name="business" value=" " />
+                                                        <input type="hidden" name="item_name" value="{{$products_DDGS->name}}" />
+                                                        <input type="hidden" name="amount" value="{{$products_DDGS->competitive_price_last_sale}}" />
+                                                        <input type="hidden" name="discount_amount" value="1.00" />
+                                                        <input type="hidden" name="currency_code" value="USD" />
+                                                        <input type="hidden" name="return" value=" " />
+                                                        <input type="hidden" name="cancel_return" value=" " />
+                                                        <input type="submit" name="submit" value="Add to cart" class="button btn" />
+                                                    </fieldset>
+                                                </form>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="item-info-product text-center border-top mt-4">
-                                        <h4 class="pt-1">
-                                            <a href="single.html">Microwave Oven</a>
-                                        </h4>
-                                        <div class="info-product-price my-2">
-                                            <span class="item_price">$199.00</span>
-                                            <del>$299.00</del>
-                                        </div>
-                                        <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                                            <form action="#" method="post">
-                                                <fieldset>
-                                                    <input type="hidden" name="cmd" value="_cart" />
-                                                    <input type="hidden" name="add" value="1" />
-                                                    <input type="hidden" name="business" value=" " />
-                                                    <input type="hidden" name="item_name" value="Microwave Oven" />
-                                                    <input type="hidden" name="amount" value="199.00" />
-                                                    <input type="hidden" name="discount_amount" value="1.00" />
-                                                    <input type="hidden" name="currency_code" value="USD" />
-                                                    <input type="hidden" name="return" value=" " />
-                                                    <input type="hidden" name="cancel_return" value=" " />
-                                                    <input type="submit" name="submit" value="Add to cart" class="button btn" />
-                                                </fieldset>
-                                            </form>
-                                        </div>
+                                          </div>
                                     </div>
                                 </div>
                             </div>
+                            
+                            @endforeach
                         </div>
                     </div>
                     <!-- //fourth section -->

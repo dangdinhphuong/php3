@@ -54,9 +54,6 @@ class ProductController extends Controller
                 return $request->keyword ? $query->from('products')->where('name', 'like', "%$request->keyword%") : '';
             })
             ->orderBy('updated_at', 'DESC')->paginate(10);
-foreach($products as $product){
-    $product['competitive_price_last_sale']=0;
-}
 
         $data["searchKeyword"] = $request->searchKeyword;
         $data["category_id"] = $request->category_id;
@@ -143,7 +140,7 @@ foreach($products as $product){
         $model = Product::find($id);
 
 
-        //   dd($model->image_products);
+        //   dd($model);
         if ($model) {
             $product_ids = $model->product_cate_pros;
             $model->load('image_products');
@@ -156,28 +153,12 @@ foreach($products as $product){
     }
 
 
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         $model = Product::find($id);
-       //  dd($request->file('image'));
+       
         if ($model) {
             $model->load('image_products');
-            $request->validate([
-                'name' => 'required|max:500',
-                'slug' => 'required',
-                'image' => 'mimetypes:image/jpeg,image/png|max:2048',
-                'image2' => 'max:10048',
-                'branch_id' => 'required',
-                'cate_id' => 'required',
-                'price' => 'required|regex:/^\d*(\.\d{2})?$/',
-                'competitive_price' => 'required|regex:/^\d*(\.\d{2})?$/',
-                'short_desc' => 'required',
-            ]);
-            if ($request->name !== $model->name) {
-                $request->validate([
-                    'name' => 'unique:products',
-                ]);
-            }
             $request->discount = ($request->discount != null) ? $request->discount : 0;
             //  dd($model->image);
             try {
