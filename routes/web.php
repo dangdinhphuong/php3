@@ -19,7 +19,7 @@ use App\Http\Controllers\UserController;
 
 
 //middleware('login_manage')->
-Route::name('admin.')->prefix('admin/', )->group(function () {
+Route::middleware('login_manage')->name('admin.')->prefix('admin/', )->group(function () {
     Route::get('/', function () { return view('admin.layout');});
     Route::name('categories.')->prefix('categories/')->group(function () {
         Route::get('', [CategoryController::class, 'index'])->name('index');
