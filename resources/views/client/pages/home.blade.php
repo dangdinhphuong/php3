@@ -1,56 +1,6 @@
 @extends('client.layout')
 @section('title', "Cửa hàng điện tử")
-@section('navigation')
-<li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
-    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{config('categories.cate.status.1')}}
-    </a>
-    <div class="dropdown-menu">
-        <div class="agile_inner_drop_nav_info p-4">
-            <h5 class="mb-3">Điện thoại di động, Máy tính</h5>
-            <div class="row">
-                <div class="col-sm-12 multi-gd-img">
-                    <ul class="multi-column-dropdown">
-                        @foreach($categories as $categorie)
-                        @if($categorie->status==1)
-                        <li class="float-left mr-4">
-                            <a href="{{$categorie->slug}}">{{$categorie->name}}</a>
-                        </li>
-                        @endif
-                    @endforeach
-                    </ul>
-                </div>
-               
-            </div>
-        </div>
-    </div>
-</li>
 
-<li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
-    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{config('categories.cate.status.0')}}
-    </a>
-    <div class="dropdown-menu">
-        <div class="agile_inner_drop_nav_info p-4">
-            <h5 class="mb-3">TV, Thiết bị, Điện tử</h5>
-            <div class="row">
-                <div class="col-sm-12 multi-gd-img">
-                    <ul class="multi-column-dropdown">
-                        @foreach($categories as $categorie)
-                        @if($categorie->status==0)
-                        <li class="float-left mr-4">
-                            <a href="{{$categorie->slug}}">{{$categorie->name}}</a>
-                        </li>
-                        @endif
-                    @endforeach
-                    </ul>
-                </div>
-              
-            </div>
-        </div>
-    </div>
-</li>
-@endsection
 @section('content')
 
 
@@ -120,7 +70,7 @@
                                         <img src="{{asset('storage/'.$products_DT[$i]->image)}}" alt="" style="width: 200px;">
                                         <div class="men-cart-pro">
                                             <div class="inner-men-cart-pro">
-                                                <a href="single.html" class="link-product-add-cart">Xem sản phẩm</a>
+                                                <a href="{{route('product_detail').'?pr='.$products_DT[$i]->slug}}" class="link-product-add-cart">Xem sản phẩm</a>
                                             </div>
                                         </div>
                                     </div>
@@ -147,7 +97,7 @@
                                                         <input type="hidden" name="currency_code" value="USD" />
                                                         <input type="hidden" name="return" value=" " />
                                                         <input type="hidden" name="cancel_return" value=" " />
-                                                        <input type="submit" name="submit" value="Add to cart" class="button btn" />
+                                                        <input type="submit" name="submit" value="Thêm sản phẩm" class="button btn" />
                                                     </fieldset>
                                                 </form>
                                             </div>
@@ -182,14 +132,14 @@
                                         <img src="{{asset('storage/'.$products_sale->image)}}" alt="" style="width: 200px;">
                                         <div class="men-cart-pro">
                                             <div class="inner-men-cart-pro">
-                                                <a href="single.html" class="link-product-add-cart">Xem sản phẩm</a>
+                                                <a href="{{route('product_detail').'?pr='.$products_sale->slug}}" class="link-product-add-cart">Xem sản phẩm</a>
                                             </div>
                                         </div>
                                     </div>
                                     <span class="product-new-top">{{$products_sale->discount}}</span>
                                     <div class="item-info-product text-center border-top mt-4">
                                         <div class="d-flex  flex-column bd-highlight mb-3" style="height: 200px;">
-                                            <h4 class="mb-auto  p-2 bd-highlight"> <a href="single.html">{{$products_sale->name}}</a></h4>
+                                            <h4 class="mb-auto  p-2 bd-highlight"> <a href="{{route('product_detail').'?pr='.$products_sale->slug}}">{{$products_sale->name}}</a></h4>
                                             <div class="p-2 pl-2 bd-highlight info-product-price" style="text-align: center">
                                                 <span class="item_price" style="font-weight: bold;text-align: center;">{{$products_sale->competitive_price_last_sale}}</span><br>
                                                 @if($products_sale->discounts!==0)
@@ -210,7 +160,7 @@
                                                         <input type="hidden" name="currency_code" value="USD" />
                                                         <input type="hidden" name="return" value=" " />
                                                         <input type="hidden" name="cancel_return" value=" " />
-                                                        <input type="submit" name="submit" value="Add to cart" class="button btn" />
+                                                        <input type="submit" name="submit" value="Thêm sản phẩm" class="button btn" />
                                                     </fieldset>
                                                 </form>
                                             </div>
@@ -245,14 +195,14 @@
                                         <img src="{{asset('storage/'.$products_DDGS->image)}}" alt="" style="width: 200px;">
                                         <div class="men-cart-pro">
                                             <div class="inner-men-cart-pro">
-                                                <a href="single.html" class="link-product-add-cart">Xem sản phẩm</a>
+                                                <a href="{{route('product_detail').'?pr='.$products_DDGS->slug}}" class="link-product-add-cart">Xem sản phẩm</a>
                                             </div>
                                         </div>
                                     </div>
                                     <span class="product-new-top">{{$products_DDGS->discount}}</span>
                                     <div class="item-info-product text-center border-top mt-4">
                                         <div class="d-flex  flex-column bd-highlight mb-3" style="height: 200px;">
-                                            <h4 class="mb-auto  p-2 bd-highlight"> <a href="single.html">{{$products_DDGS->name}}</a></h4>
+                                            <h4 class="mb-auto  p-2 bd-highlight"> <a href="{{route('product_detail').'?pr='.$products_DDGS->slug}}">{{$products_DDGS->name}}</a></h4>
                                             <div class="p-2 pl-2 bd-highlight info-product-price" style="text-align: center">
                                                 <span class="item_price" style="font-weight: bold;text-align: center;">{{$products_DDGS->competitive_price_last_sale}}</span><br>
                                                 @if($products_DDGS->discounts!==0)
@@ -273,7 +223,7 @@
                                                         <input type="hidden" name="currency_code" value="USD" />
                                                         <input type="hidden" name="return" value=" " />
                                                         <input type="hidden" name="cancel_return" value=" " />
-                                                        <input type="submit" name="submit" value="Add to cart" class="button btn" />
+                                                        <input type="submit" name="submit" value="Thêm sản phẩm" class="button btn" />
                                                     </fieldset>
                                                 </form>
                                             </div>
@@ -296,43 +246,16 @@
 </div>
 <!-- //top products -->
 
-<!-- middle section -->
-<div class="join-w3l1 py-sm-5 py-4">
-    <div class="container py-xl-4 py-lg-2">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="join-agile text-left p-4">
-                    <div class="row">
-                        <div class="col-sm-7 offer-name">
-                            <h6>Smooth, Rich & Loud Audio</h6>
-                            <h4 class="mt-2 mb-3">Branded Headphones</h4>
-                            <p>Sale up to 25% off all in store</p>
-                        </div>
-                        <div class="col-sm-5 offerimg-w3l">
-                            <img src="{{asset('asset_fe/images/off1')}}" alt="" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mt-lg-0 mt-5">
-                <div class="join-agile text-left p-4">
-                    <div class="row ">
-                        <div class="col-sm-7 offer-name">
-                            <h6>A Bigger Phone</h6>
-                            <h4 class="mt-2 mb-3">Smart Phones 5</h4>
-                            <p>Free shipping order over $100</p>
-                        </div>
-                        <div class="col-sm-5 offerimg-w3l">
-                            <img src="{{asset('asset_fe/images/off2')}}" alt="" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- middle section -->
 
+<footer>
+    <div class="footer-top-first">
+        <div class="container py-md-5 py-sm-4 py-3">
+            <!-- footer first section -->
+            <h2 class="footer-top-head-w3l font-weight-bold mb-2">Electronics :</h2>
+            <p class="footer-main mb-4">
+                If you're considering a new laptop, looking for a powerful new car stereo or shopping for a new HDTV, we make it easy to
+                find exactly what you need at a price you can afford. We offer Every Day Low Prices on TVs, laptops, cell phones, tablets
+                and iPads, video games, desktop computers, cameras and camcorders, audio, video and more.</p>
 @endsection
 
 @section('javascript')

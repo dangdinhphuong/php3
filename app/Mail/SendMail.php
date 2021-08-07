@@ -31,12 +31,8 @@ public $content;
     public function build()
      { $token=$this->content['token']["token"];
         if($this->content['view']=="confirm_pass"){
-            // dd($this->content);
-            //'Xác nhận mật khẩu mật khẩu ecommerce laravel'
             $token_forget=json_decode(Cookie::get('token_forget'));
-            // echo"<pre>";
-            // var_dump($token); 
-            // die;
+   
             return $this->subject($this->content['title'])->view('email.confirm_pass',compact("token_forget",'token'));
         }
         return $this->subject('ecommerce laravel')->view('welcome');

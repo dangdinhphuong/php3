@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use App\Models\Category;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $categories = Category::orderBy('updated_at', 'asc')->orderBy('id', 'asc')->get();
+        View::share('categoriesShare', $categories);
         Schema::defaultStringLength(191);
         Paginator::useBootstrap();
     }

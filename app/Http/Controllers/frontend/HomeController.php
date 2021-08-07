@@ -14,8 +14,6 @@ class HomeController extends Controller
   public $products_DDG = [];
   public function index(Request $request)
   {
-    // get categories
-    $categories = Category::orderBy('updated_at', 'asc')->orderBy('id', 'asc')->get();
     // get slider
     $slider = Slider::orderBy('updated_at', 'desc')->get();
     $products_sales = [];
@@ -54,6 +52,6 @@ class HomeController extends Controller
     // get producs sale >45%
     $products_sales = Product::where('discount', '>=', '15')->orderBy('discount', 'desc')->orderBy('updated_at', 'desc')->paginate(4);
     // dd($products_sales);
-    return view('client.pages.home', compact("categories", 'slider', 'products_DT','products_DDG', 'products_sales'));
+    return view('client.pages.home', compact( 'slider', 'products_DT','products_DDG', 'products_sales'));
   }
 }

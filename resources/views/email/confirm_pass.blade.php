@@ -10,7 +10,7 @@
 <body>
      <div class="content">
          <h2  >
-             <p>Click vào đường link để đổi mật khẩu {{$token}}</p><h5>
+             <p>Click vào đường link để đổi mật khẩu</p><h5>
                  <a href="{{route('auth.new_pass')}}?tp={{$token}}">
                  
                      {{route('auth.new_pass')}}?tp={{$token}}</a></h5>

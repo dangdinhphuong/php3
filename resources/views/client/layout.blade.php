@@ -73,7 +73,59 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </li>
                     
                 
-@yield('navigation')
+                    <li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{config('categories.cate.status.1')}}
+                        </a>
+                        <div class="dropdown-menu">
+                            <div class="agile_inner_drop_nav_info p-4">
+                                <h5 class="mb-3">Điện thoại di động, Máy tính</h5>
+                                <div class="row">
+                                    <div class="col-sm-12 multi-gd-img">
+                                        <ul class="multi-column-dropdown">
+                                            @foreach($categoriesShare as $categorie)
+                                            @if($categorie->status==1)
+                                            <li class="float-left mr-4">
+                                                <a href="{{route('cate_product').'?cp='.$categorie->slug}}">{{$categorie->name}}</a>
+                                            </li>
+                                            @endif
+                                        @endforeach
+                                        </ul>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{config('categories.cate.status.0')}}
+                        </a>
+                        <div class="dropdown-menu">
+                            <div class="agile_inner_drop_nav_info p-4">
+                                <h5 class="mb-3">TV, Thiết bị, Điện tử</h5>
+                                <div class="row">
+                                    <div class="col-sm-12 multi-gd-img">
+                                        <ul class="multi-column-dropdown">
+                                            @foreach($categoriesShare as $categorie)
+                                            @if($categorie->status==0)
+                                            <li class="float-left mr-4">
+                                                <a href="{{route('cate_product').'?cp='.$categorie->slug}}">{{$categorie->name}}</a>
+                                            </li>
+                                            @endif
+                                        @endforeach
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+
+
+
                     <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
                         <a class="nav-link" href="about.html">About Us</a>
                     </li>
@@ -105,11 +157,45 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </div>
 
 <!-- //navigation -->
-
 <!-- content  -->
-	@yield('content')
+@yield('content')
 <!-- end content  -->
-    
+<!-- middle section -->
+<div class="join-w3l1 py-sm-5 py-4">
+    <div class="container py-xl-4 py-lg-2">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="join-agile text-left p-4">
+                    <div class="row">
+                        <div class="col-sm-7 offer-name">
+                            <h6>Smooth, Rich & Loud Audio</h6>
+                            <h4 class="mt-2 mb-3">Branded Headphones</h4>
+                            <p>Sale up to 25% off all in store</p>
+                        </div>
+                        <div class="col-sm-5 offerimg-w3l">
+                            <img src="{{asset('asset_fe/images/off1')}}" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-lg-0 mt-5">
+                <div class="join-agile text-left p-4">
+                    <div class="row ">
+                        <div class="col-sm-7 offer-name">
+                            <h6>A Bigger Phone</h6>
+                            <h4 class="mt-2 mb-3">Smart Phones 5</h4>
+                            <p>Free shipping order over $100</p>
+                        </div>
+                        <div class="col-sm-5 offerimg-w3l">
+                            <img src="{{asset('asset_fe/images/off2')}}" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- middle section -->
 	<!-- footer -->
 @include('client.components.footer')
 <!-- //footer -->

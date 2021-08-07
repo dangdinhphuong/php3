@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
-
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Admin\Auth\StorePassword;
 class Authentication extends Controller
 {
     private $user;
@@ -25,22 +25,25 @@ class Authentication extends Controller
     }
     public function login_post(Request $request)
     {
-        $users = DB::table('users')->where("email", $request->email)->first();
-
-        if (!isset($users->email) || empty($users->email)) { // check email exists
-
-            return redirect()->back()->with('status', 'Email không tồn tại!');
-        }
+        //  $users = DB::table('users')->where("email", $request->email)->first();
+        $data = $request->only([
+            'email',
+            'password',
+        ]);
+        $result = Auth::attempt($data);
+        $users = Auth::user();
+        // dd($users->name);
+       
         if (!isset($users->status) || $users->status != 1) { // check status account when status != 1
             return redirect()->back()->with('status', 'Tài khoản bị khóa vui lòng liên hệ admin !');
         }
         if (!isset($users->is_manage) || $users->is_manage != 1) { // check manager account when is_manage = 1
             return redirect()->back()->with('status', 'Tài khoản không được quyền truy cập!');
         }
-        if (!isset($users->password) || Hash::check($request->password, $users->password) === false) { // check passworrd account
-            return redirect()->back()->with('status', 'Tài khoản nhập không đúng!');
+        if ($result === false) { // check passworrd account
+            return redirect()->back()->with('status', 'Sai email hoặc mật khẩu');
         }
-        session(['admin_login' => $users]); //store the user's data into the session
+       // session(['admin_login' => $users]); //store the user's data into the session
         if (isset($request->remember) && $request->remember == "on") {
             $minutes = 3600 * 30;
             $hash = $users->id . $users->email . $request->_token;
@@ -48,7 +51,6 @@ class Authentication extends Controller
             Cookie::queue('admin_login_remember', $cookieValue, $minutes);
             // update phiên token vào phiên làm việc vào database
             /// $this->user->find($users->id)->update(['remember_token' => $cookieValue]);
-
             try {
                 DB::beginTransaction();
                 DB::table('users')->where('id', $users->id)->update(['remember_token' => $cookieValue]);
@@ -65,8 +67,7 @@ class Authentication extends Controller
     {
         Cookie::queue('admin_login_remember', "", -3600);
         Cookie::queue('token_forget', "", -3600);
-        $request->session()->forget('admin_login');
-        $request->session()->flush();
+        Auth::logout();
         return redirect()->back();
     }
 
@@ -81,29 +82,25 @@ class Authentication extends Controller
     public function new_password(Request $request)
     {
         $token_forget = json_decode(Cookie::get('token_forget')) == true ? json_decode(Cookie::get('token_forget')) : "";
-        // echo"<pre>";
-        // var_dump( $token_forget->address); 
-        //  dd( session()->get('admin_login2'),session('admin_login'));
-        if (!empty($_REQUEST['tp']) &&!empty($token_forget->token)&& ($_REQUEST['tp'] == $token_forget->token)) {
+
+        if (!empty($_REQUEST['tp']) && !empty($token_forget->token) && ($_REQUEST['tp'] == $token_forget->token)) {
             return view('admin.auth.new_pass');
         }
         return redirect('auth/login');
     }
 
-    public function strore_password(Request $request)
+    public function strore_password(StorePassword $request)
     {
-        // validator
-        $rules = [
-            'password' => 'required|max:100|min:4',
-
-        ];
-        $messages = [
-            'password.required' => 'Mời nhập mập khẩu người dùng!',
-            'password.max' => 'mập khẩu  không quá 100 ký tự!',
-            'password.min' => 'mập khẩu  ít nhất 4 ký tự!',
-
-        ];
-        $validator = $request->validate($rules, $messages);
+        // // validator
+        // $rules = [
+        //     'password' => 'required|max:100|min:4',
+        // ];
+        // $messages = [
+        //     'password.required' => 'Mời nhập mập khẩu người dùng!',
+        //     'password.max' => 'mập khẩu  không quá 100 ký tự!',
+        //     'password.min' => 'mập khẩu  ít nhất 4 ký tự!',
+        // ];
+        // $validator = $request->validate($rules, $messages);
 
         $token_forget = json_decode(Cookie::get('token_forget')) == true ? json_decode(Cookie::get('token_forget')) : "";
         $users = DB::table('users')->where("email", $token_forget->address)->first();
@@ -111,7 +108,7 @@ class Authentication extends Controller
         DB::table('users')->where('id', $users->id)->update(['password' => $request->password]);
         try {
             DB::beginTransaction();
-            
+
             DB::commit();
             Cookie::queue('token_forget', "", -300);
             return redirect("auth/login");
@@ -119,6 +116,5 @@ class Authentication extends Controller
             DB::rollBack();
             Log::error('message :', $exception->getMessage() . '--line :' . $exception->getLine());
         }
-
     }
 }

@@ -91,13 +91,11 @@ Route::middleware('login_manage')->name('admin.')->prefix('admin/', )->group(fun
     });
 });
 
-Route::get('test', function () {  return view('client.pages.home');
-  })->name("/");
-
-Route::get('/', 'frontend\HomeController@index')->name('home');
 
 
-
+ Route::get('/', 'frontend\HomeController@index')->name('/');
+ Route::get('productdetail', 'frontend\ProductDetailController@index')->name('product_detail');
+ Route::get('cateproduct', 'frontend\CateProductController@index')->name('cate_product');
 
 
 

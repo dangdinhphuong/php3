@@ -39,18 +39,17 @@ class SendMailControllers extends Controller
         $minutes = 300;
         $token = Hash::make(rand(100000, 9999999));
         $address = [$users->email];
-        $token_forget=["token"=>$token,"address"=>$address];
-       Cookie::queue('token_forget',json_encode($token_forget), $minutes);
+        $token_forget = ["token" => $token, "address" => $address];
+        Cookie::queue('token_forget', json_encode($token_forget), $minutes);
         $content = [
             'view' => "confirm_pass",
             'title' => "Xác nhận mật khẩu mật khẩu ecommerce laravel",
             'body' => $token,
-            'token'=>$token_forget,
+            'token' => $token_forget,
         ];
-         SendMailControllers::Send($address,$content);
-         echo "<pre>";
+        SendMailControllers::Send($address, $content);
+        echo "<pre>";
         var_dump(Cookie::get('token_forget'));
-       return redirect("auth/login");
-      
+        return redirect("auth/login");
     }
 }
