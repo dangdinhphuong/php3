@@ -39,7 +39,7 @@ class Product extends Model
     {
         return $this->belongsTo(Branch::class, 'branch_id');
     }
-
+ 
      // Chỉnh sửa dữ liệu đầu ra khi đối tượng gọi thuộc tính. Trường hợp muốn lấy dữ liệu gốc thì dùng hàm getRawOriginal('attributeName')
     // Accessor get{AttributeName}Attribute
     public function getPriceAttribute() {
@@ -58,6 +58,8 @@ class Product extends Model
         }
         return $competitive_priceLastSale;
     }
+
+    
     public function getDiscountAttribute() {
         $discount ="- ".$this->attributes['discount']. ' %';
         return $discount;

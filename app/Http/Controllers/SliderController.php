@@ -20,11 +20,7 @@ class SliderController extends Controller
         $this->product = $product;
         $this->slider = $slider;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+ 
     public function index()
     {
         $sliders = $this->slider->all();
@@ -32,11 +28,7 @@ class SliderController extends Controller
         return view("admin.pages.slider.index", compact("sliders"));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function create()
     {
         $links = $this->product->all();
@@ -44,12 +36,7 @@ class SliderController extends Controller
         return view("admin.pages.slider.create", compact("links"));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         // dd($request);

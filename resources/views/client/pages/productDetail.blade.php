@@ -88,10 +88,19 @@
 					</div>
 					<div class="occasion-cart">
 						<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
+							@if (Auth::check())
 							<form action="#" method="post">
-									<input type="submit" name="submit" value="Mua sản phẩm" class="button" />
-								</fieldset>
+								@csrf
+								<input type="hidden" value="{{ $product->id }}"
+									name="id">
+								<input value="Thêm sản phẩm" class="button btn add submit" />
 							</form>
+							@else
+							<input value="Mua sản phẩm"class="button btn add submit login_model" />
+								
+
+						    @endif
+							
 						</div>
 					</div>
 				</div>
@@ -131,4 +140,21 @@
 			});
 		});
 	</script>
+	  <script src="{{ asset('asset_fe/js/product/addproduct.js') }}"></script>
+	  <!-- //auth -->
+	  <!-- login -->
+	  <script>
+		  $('.add').on('click', function() {
+			  let token = $(this).parent().find('input[name=_token]').val();
+			  let id = $(this).parent().find('input[name=id]').val();
+			  addproduct("{{ route('addproduct') }}", id, token);
+
+		  });
+		  $('.login_model').on('click', function() {
+			  $("#login")[0].reset();
+
+			  $("#exampleModal").modal("show");
+
+		  });
+	  </script>
 @endsection

@@ -33,9 +33,11 @@ function login(route) {
                swal("Bạn đã đăng nhập thành công!", {
                 icon: "success",
                 timer: 2000,
-            }); 
+            }
+            ); 
             $('#login')[0].reset();
             $('#exampleModal').modal('hide');
+            location.reload()
             }
 
         },

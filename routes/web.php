@@ -96,14 +96,16 @@ Route::middleware('login_manage')->name('admin.')->prefix('admin/', )->group(fun
  Route::get('/', 'frontend\HomeController@index')->name('/');
  Route::get('productdetail', 'frontend\ProductDetailController@index')->name('product_detail');
  Route::get('cateproduct', 'frontend\CateProductController@index')->name('cate_product');
-
-
+ 
+ Route::middleware('login_manage')->group(function () {
+ Route::post('add/product', 'frontend\CheckoutController@add_product')->name('addproduct'); 
+ Route::get('checkout/cart', 'frontend\CheckoutController@index')->name('checkout'); 
+ });
 
 
 
 Route::prefix('auth')->group(function () {
     Route::get('login', 'Authentication@login_get')->name('auth.login');
-   
     Route::get('logout', 'Authentication@login_out')->name('auth.logout');
     Route::get('forgot', 'Authentication@forgot')->name('auth.forgot');
     Route::get('new_pass', 'Authentication@new_password')->name('auth.new_pass');

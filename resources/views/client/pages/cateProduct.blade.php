@@ -56,9 +56,19 @@
                                                  @endif                                           
                                             </div>
                                             <div class="p-2 bd-highlight snipcart-details  top_brand_home_details item_add single-item hvr-outline-out">
-                                                <form action="#" method="post">                                           
-                                                        <input type="submit" name="submit" value="Thêm sản phẩm" class="button btn" />                                           
+                                              
+                                                @if (Auth::check())
+                                                <form action="#" method="post">
+                                                    @csrf
+                                                    <input type="hidden" value="{{ $products->id }}"
+                                                        name="id">
+                                                    <input value="Thêm sản phẩm" class="button btn add submit" />
                                                 </form>
+                                                @else
+                                                <input value="Thêm sản phẩm"class="button btn add submit login_model" />
+                                                    
+                    
+                                                @endif
                                             </div>
                                           </div>
                                     </div>
@@ -334,4 +344,21 @@
 			});
 		});
 	</script>
+    <script src="{{ asset('asset_fe/js/product/addproduct.js') }}"></script>
+    <!-- //auth -->
+    <!-- login -->
+    <script>
+        $('.add').on('click', function() {
+            let token = $(this).parent().find('input[name=_token]').val();
+            let id = $(this).parent().find('input[name=id]').val();
+            addproduct("{{ route('addproduct') }}", id, token);
+
+        });
+        $('.login_model').on('click', function() {
+            $("#login")[0].reset();
+
+            $("#exampleModal").modal("show");
+
+        });
+    </script>
 @endsection
