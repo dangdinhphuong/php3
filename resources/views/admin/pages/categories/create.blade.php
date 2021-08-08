@@ -14,8 +14,7 @@
                     <div class="form-group">
                         <label for="cate_name">Tên danh mục</label>
                         <input type="text"  onchange="ChangeToSlug('cate_name','slug')" class="form-control" require id="cate_name">
-                        <div id="cate_alert" style="display:none" class="alert alert-danger mt-3" role="alert">
-                            
+                        <div id="cate_alert" style="display:none" class="alert alert-danger mt-3" role="alert">                          
                         </div>
                     </div>
                     <div class="form-group">

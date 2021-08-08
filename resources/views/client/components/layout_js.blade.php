@@ -1,7 +1,7 @@
 <!-- jquery -->
 <script src="{{asset('asset_fe/js/jquery-2.2.3.min.js')}}"></script>
 <!-- //jquery -->
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- nav smooth scroll -->
 <script>
     $(document).ready(function () {
@@ -38,35 +38,63 @@
     });
 </script>
 <!-- //popup modal (for location)-->
+    <!-- password-script -->
+    <script>
+        window.onload = function () {
+            document.getElementById("password1").onchange = validatePassword;
+            document.getElementById("password2").onchange = validatePassword;
+        }
 
+        function validatePassword() {
+            var pass2 = document.getElementById("password2").value;
+            var pass1 = document.getElementById("password1").value;
+            if (pass1 != pass2)
+                document.getElementById("password2").setCustomValidity("Mật khẩu không khớp");
+            else
+                document.getElementById("password2").setCustomValidity('');
+            //empty string means no validation error
+        }
+    </script>
+    <!-- //password-script -->
+    <!-- auth -->
+    <script src="{{asset('asset_fe/js/auth/login.js')}}"></script>
+    <script src="{{asset('asset_fe/js/auth/register.js')}}"></script>
+    <!-- //auth -->
+    <!-- login -->
+    <script>
+        $('#login').on('submit', function (e) {
+            e.preventDefault();
+            login("{{route('authentication.login_post_model')}}");
+        });
+    </script>
+    <!-- //login -->
+    <!-- Register -->
+    <script>
+            $('#btn_register').attr('disabled','disabled');
+            $('#customControlAutosizing2').on('click', function () {
+                if ($('#customControlAutosizing2').prop('checked')) {
+                  $('#btn_register').attr('disabled',false);
+                }
+                else{
+                    $('#btn_register').attr('disabled','disabled');
+                }
+            
+            //login("{{route('authentication.login_post_model')}}");
+            });
+       
+        $('#register').on('submit', function (e) {
+             e.preventDefault();
+            register("http://127.0.0.1:8000/auth/register");
+        });
+    </script>
+    <!-- //Register -->
+    <!-- scroll seller -->
+    <script src="{{asset('asset_fe/js/scroll.js')}}"></script>
+    <!-- //scroll seller -->
 
-
-<!-- password-script -->
-<script>
-    window.onload = function () {
-        document.getElementById("password1").onchange = validatePassword;
-        document.getElementById("password2").onchange = validatePassword;
-    }
-
-    function validatePassword() {
-        var pass2 = document.getElementById("password2").value;
-        var pass1 = document.getElementById("password1").value;
-        if (pass1 != pass2)
-            document.getElementById("password2").setCustomValidity("Passwords Don't Match");
-        else
-            document.getElementById("password2").setCustomValidity('');
-        //empty string means no validation error
-    }
-</script>
-<!-- //password-script -->
-
-<!-- scroll seller -->
-<script src="{{asset('asset_fe/js/scroll.js')}}"></script>
-<!-- //scroll seller -->
-
-<!-- smoothscroll -->
-<script src="{{asset('asset_fe/js/SmoothScroll.min.js')}}"></script>
-<!-- //smoothscroll -->
+    <!-- smoothscroll -->
+    <script src="{{asset('asset_fe/js/SmoothScroll.min.js')}}"></script>
+    <!-- //smoothscroll -->
 
 <!-- start-smooth-scrolling -->
 <script src="{{asset('asset_fe/js/move-top.js')}}"></script>

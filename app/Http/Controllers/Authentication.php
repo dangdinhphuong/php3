@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Admin\Auth\StorePassword;
+use App\Http\Requests\Admin\Auth\registerValidator;
 class Authentication extends Controller
 {
     private $user;
@@ -23,6 +24,36 @@ class Authentication extends Controller
     {
         return view('admin.auth.login');
     }
+    public function register(registerValidator $request)
+    {
+        // validator
+       // dd($request->name);
+        $request->status = 1;
+        try {
+            DB::beginTransaction();
+            $user = $this->user->create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'register_at' => date('Y-m-d'),
+                'last_login' => date('Y-m-d'),
+                'status' => $request->status,
+                'phone_number' => "",
+                'profile' => "",
+                'image' => "",
+                'intro' => "",
+            ]);
+
+            $user->roles()->attach(2); // upload create array to roles ===> 'attach'
+            DB::commit();
+            return response()->json(['status'=>'Đăng ký thành công !']);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return response()->json(['error'=>'Đăng ký thất bại !']);
+        }
+      
+// return response()->json(['adasfdsfsdf']);
+    }
     public function login_post(Request $request)
     {
         //  $users = DB::table('users')->where("email", $request->email)->first();
@@ -32,8 +63,8 @@ class Authentication extends Controller
         ]);
         $result = Auth::attempt($data);
         $users = Auth::user();
-        // dd($users->name);
-       
+        // dd($data);
+
         if (!isset($users->status) || $users->status != 1) { // check status account when status != 1
             return redirect()->back()->with('status', 'Tài khoản bị khóa vui lòng liên hệ admin !');
         }
@@ -43,7 +74,7 @@ class Authentication extends Controller
         if ($result === false) { // check passworrd account
             return redirect()->back()->with('status', 'Sai email hoặc mật khẩu');
         }
-       // session(['admin_login' => $users]); //store the user's data into the session
+        // session(['admin_login' => $users]); //store the user's data into the session
         if (isset($request->remember) && $request->remember == "on") {
             $minutes = 3600 * 30;
             $hash = $users->id . $users->email . $request->_token;
@@ -63,12 +94,65 @@ class Authentication extends Controller
         $Cookie_user = Cookie::get('admin_login_remember');
         return redirect("/");
     }
+    public function login_post_model(Request $request)
+    {
+        //  $users = DB::table('users')->where("email", $request->email)->first();
+        $data = $request->only([
+            'email',
+            'password',
+
+        ]);
+        //dd($request->remember_token);
+        if (Auth::user() != null) {
+            Auth::logout();
+        }
+        $result = Auth::attempt($data);
+        $users = Auth::user();
+        if ($result === false) { // check passworrd account
+            if (Auth::user() != null) {
+                Auth::logout();
+            }
+            return response()->json(["error" => "Sai email hoặc mật khẩu"]);
+        } else if (!isset($users->status) || $users->status != 1) { // check status account when status != 1
+
+            if (Auth::user() != null) {
+                Auth::logout();
+            }
+            return response()->json(["error" => "Tài khoản bị khóa vui lòng liên hệ admin !"]);
+        } else if (!isset($users->is_manage) || $users->is_manage != 1) { // check manager account when is_manage = 1
+            if (Auth::user() != null) {
+                Auth::logout();
+            }
+            return response()->json(["error" => "Tài khoản không được quyền truy cập!"]);
+        }
+
+        //  dd($request->remember_token);
+        if (isset($request->remember_token) && $request->remember_token == "1") {
+
+            $minutes = 3600 * 30;
+            $hash = $users->id . $users->email . $request->_token;
+            $cookieValue = Hash::make($hash);
+            Cookie::queue('admin_login_remember', $cookieValue, $minutes);
+            // update phiên token vào phiên làm việc vào database
+            try {
+                DB::beginTransaction();
+                DB::table('users')->where('id', $users->id)->update(['remember_token' => $cookieValue]);
+                DB::commit();
+            } catch (Exception $exception) {
+                DB::rollBack();
+                Log::error('message :', $exception->getMessage() . '--line :' . $exception->getLine());
+            }
+        }
+        $Cookie_user = Cookie::get('admin_login_remember');
+
+        return response()->json($Cookie_user);
+    }
     public function login_out(Request $request)
     {
         Cookie::queue('admin_login_remember', "", -3600);
         Cookie::queue('token_forget', "", -3600);
         Auth::logout();
-        return redirect()->back();
+        return redirect()->route("/");
     }
 
 
@@ -76,9 +160,6 @@ class Authentication extends Controller
     {
         return view('admin.auth.forgot');
     }
-
-
-
     public function new_password(Request $request)
     {
         $token_forget = json_decode(Cookie::get('token_forget')) == true ? json_decode(Cookie::get('token_forget')) : "";
@@ -91,16 +172,7 @@ class Authentication extends Controller
 
     public function strore_password(StorePassword $request)
     {
-        // // validator
-        // $rules = [
-        //     'password' => 'required|max:100|min:4',
-        // ];
-        // $messages = [
-        //     'password.required' => 'Mời nhập mập khẩu người dùng!',
-        //     'password.max' => 'mập khẩu  không quá 100 ký tự!',
-        //     'password.min' => 'mập khẩu  ít nhất 4 ký tự!',
-        // ];
-        // $validator = $request->validate($rules, $messages);
+
 
         $token_forget = json_decode(Cookie::get('token_forget')) == true ? json_decode(Cookie::get('token_forget')) : "";
         $users = DB::table('users')->where("email", $token_forget->address)->first();

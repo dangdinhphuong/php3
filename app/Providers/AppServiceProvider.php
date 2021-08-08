@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $categories = Category::orderBy('updated_at', 'asc')->orderBy('id', 'asc')->get();
         View::share('categoriesShare', $categories);
+        
         Schema::defaultStringLength(191);
         Paginator::useBootstrap();
     }

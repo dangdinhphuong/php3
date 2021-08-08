@@ -20,14 +20,26 @@
                     <li class="text-center border-right text-white">
                         <i class="fas fa-phone mr-2"></i> 001 234 5678
                     </li>
-                    <li class="text-center border-right text-white">
-                        <a href="#" data-toggle="modal" data-target="#exampleModal" class="text-white">
-                            <i class="fas fa-sign-in-alt mr-2"></i> Log In </a>
-                    </li>
-                    <li class="text-center text-white">
-                        <a href="#" data-toggle="modal" data-target="#exampleModal2" class="text-white">
-                            <i class="fas fa-sign-out-alt mr-2"></i>Register </a>
-                    </li>
+                    @if (Auth::check())
+                        <li class="text-center border-right text-white">
+                            {{ Auth::user()->name }}
+
+                        </li>
+                        <li class="text-center border-right text-white">
+                            <a href="{{ route('auth.logout') }}" class="text-white">
+                                <i class="fas fa-sign-in-alt mr-2"></i> Đăng xuất </a>
+                        </li>
+                    @else
+                        <li class="text-center border-right text-white">
+                            <a href="#" data-toggle="modal" data-target="#exampleModal" class="text-white">
+                                <i class="fas fa-sign-in-alt mr-2"></i> Đăng nhập </a>
+                        </li>
+                        <li class="text-center text-white">
+                            <a href="#" data-toggle="modal" data-target="#exampleModal2" class="text-white">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Đăng ký </a>
+                        </li>
+                    @endif
+
                 </ul>
                 <!-- //header lists -->
             </div>
@@ -39,7 +51,8 @@
 <div id="small-dialog1" class="mfp-hide">
     <div class="select-city">
         <h3>
-            <i class="fas fa-map-marker"></i> Please Select Your Location</h3>
+            <i class="fas fa-map-marker"></i> Please Select Your Location
+        </h3>
         <select class="list_of_cities">
             <optgroup label="Popular Cities">
                 <option selected style="display:none;color:#eee;">Select City</option>
@@ -415,25 +428,32 @@
 <!-- //shop locator (popup) -->
 
 <!-- modals -->
+
 <!-- log in -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-center">Log In</h5>
+                <h5 class="modal-title text-center">Đăng nhập</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
+            <div class="message" id="message">
+
+            </div>
+
             <div class="modal-body">
-                <form action="#" method="post">
+                <form action="" id="login">
+                    @csrf
                     <div class="form-group">
-                        <label class="col-form-label">Username</label>
-                        <input type="text" class="form-control" placeholder=" " name="Name" required="">
+                        <label class="col-form-label">Nhập email</label>
+                        <input type="text" class="form-control" placeholder="Emai" id="email" required="">
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label">Password</label>
-                        <input type="password" class="form-control" placeholder=" " name="Password" required="">
+                        <label class="col-form-label">Nhập mật khẩu</label>
+                        <input type="password" class="form-control" placeholder="Password" id="password" required="">
                     </div>
                     <div class="right-w3l">
                         <input type="submit" class="form-control" value="Log in">
@@ -441,12 +461,12 @@
                     <div class="sub-w3l">
                         <div class="custom-control custom-checkbox mr-sm-2">
                             <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
-                            <label class="custom-control-label" for="customControlAutosizing">Remember me?</label>
+                            <label class="custom-control-label" for="customControlAutosizing">Luôn đăng nhập?</label>
                         </div>
                     </div>
-                    <p class="text-center dont-do mt-3">Don't have an account?
+                    <p class="text-center dont-do mt-3">Không có tài khoản?
                         <a href="#" data-toggle="modal" data-target="#exampleModal2">
-                            Register Now</a>
+                            Đăng ký ngay</a>
                     </p>
                 </form>
             </div>
@@ -458,37 +478,54 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Register</h5>
+                <h5 class="modal-title">Đăng ký</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div class="message" id="message_register" style="display: none">
+                <div class='alert alert-danger alert-dismissible fade show' id='message_error' role='alert'>
+                    <ul id="errors">
+                        
+  
+                    </ul>
+                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'
+                        style='color:black; opacity: 01;'>
+                        <span aria-hidden='true' style='color:black'>&times;
+                        </span>
+                    </button>
+                </div>
+            </div>
             <div class="modal-body">
-                <form action="#" method="post">
+                <form action="" id="register">
+                    @csrf
                     <div class="form-group">
-                        <label class="col-form-label">Your Name</label>
-                        <input type="text" class="form-control" placeholder=" " name="Name" required="">
+                        <label class="col-form-label">Tên tài khoản</label>
+                        <input type="text" class="form-control" placeholder=" " id="lname" required="">
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label">Email</label>
-                        <input type="email" class="form-control" placeholder=" " name="Email" required="">
+                        <label class="col-form-label">Tài khoản email</label>
+                        <input type="email" class="form-control" placeholder=" " id="lemail" required="">
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label">Password</label>
-                        <input type="password" class="form-control" placeholder=" " name="Password" id="password1" required="">
+                        <label class="col-form-label">Mật khẩu</label>
+                        <input type="password" class="form-control" placeholder=" " name="Password" id="password1"
+                            required="">
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label">Confirm Password</label>
-                        <input type="password" class="form-control" placeholder=" " name="Confirm Password" id="password2" required="">
-                    </div>
-                    <div class="right-w3l">
-                        <input type="submit" class="form-control" value="Register">
+                        <label class="col-form-label">Xác nhận mật khẩu</label>
+                        <input type="password" class="form-control" placeholder=" " name="Confirm Password"
+                            id="password2" required="">
                     </div>
                     <div class="sub-w3l">
                         <div class="custom-control custom-checkbox mr-sm-2">
                             <input type="checkbox" class="custom-control-input" id="customControlAutosizing2">
-                            <label class="custom-control-label" for="customControlAutosizing2">I Accept to the Terms & Conditions</label>
+                            <label class="custom-control-label" for="customControlAutosizing2">Tôi chấp nhận các Điều
+                                khoản & Điều kiện</label>
                         </div>
+                    </div>
+                    <div class="right-w3l">
+                        <input type="submit" class="form-control" id="btn_register" value="Đăng ký">
                     </div>
                 </form>
             </div>
@@ -506,7 +543,7 @@
             <div class="col-md-3 logo_agile">
                 <h1 class="text-center">
                     <a href="index.html" class="font-weight-bold font-italic">
-                        <img src="{{asset('asset_fe/images/logo2.png')}}" alt=" " class="img-fluid">Electro Store
+                        <img src="{{ asset('asset_fe/images/logo2.png') }}" alt=" " class="img-fluid">Electro Store
                     </a>
                 </h1>
             </div>
@@ -517,7 +554,8 @@
                     <!-- search -->
                     <div class="col-10 agileits_search">
                         <form class="form-inline" action="#" method="post">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" required>
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+                                required>
                             <button class="btn my-2 my-sm-0" type="submit">Search</button>
                         </form>
                     </div>

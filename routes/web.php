@@ -103,11 +103,14 @@ Route::middleware('login_manage')->name('admin.')->prefix('admin/', )->group(fun
 
 Route::prefix('auth')->group(function () {
     Route::get('login', 'Authentication@login_get')->name('auth.login');
+   
     Route::get('logout', 'Authentication@login_out')->name('auth.logout');
     Route::get('forgot', 'Authentication@forgot')->name('auth.forgot');
     Route::get('new_pass', 'Authentication@new_password')->name('auth.new_pass');
     Route::post('strore_pass', 'Authentication@strore_password')->name('auth.strore_pass');
     Route::post('confirm', 'email\SendMailControllers@sendemail')->name('auth.confirm');
     Route::post('login_post', 'Authentication@login_post')->name('authentication.login_post');
+    Route::post('login_post_model', 'Authentication@login_post_model')->name('authentication.login_post_model');
+    Route::post('register', 'Authentication@register')->name('authentication.register');
 });
 // HtmlMinifier xóa bỏ khoảng trắng trong html giúp tăng tốc laravel

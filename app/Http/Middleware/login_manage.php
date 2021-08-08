@@ -21,7 +21,7 @@ class login_manage
     {
         $Cookie_user = Cookie::get('admin_login_remember');
         $session_user = Auth::check();
-        // dd($session_user);
+        
         if (isset($Cookie_user) && !empty($Cookie_user)) { // check isset cookie
             $check_user = DB::table("users")->where('remember_token', $Cookie_user)->get();
             if (!isset($Cookie_user) || empty($Cookie_user)) {
@@ -29,7 +29,7 @@ class login_manage
                 return redirect('/auth/login');
             }
         }
-        if ($session_user === false) { // check isset session
+        else if ($session_user === false) { // check isset session
             return redirect('/auth/login');
         }
 

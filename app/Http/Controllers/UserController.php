@@ -46,6 +46,7 @@ class UserController extends Controller
         $data['totalPage'] = intval(ceil(count($users->get()) / $pagesize));
         $users =  $users->take($pagesize)->skip($offset)->get();
         return view('admin.pages.users.index', compact('roles',"users",'data'));}
+        
         else{
             return redirect("admin/role/index")->with('message', 'Mời thêm chức vụ !');
         }
@@ -71,7 +72,7 @@ class UserController extends Controller
             'phone_number' => 'required|min:9|numeric',
             'profile' => 'required|max:500|min:4',
             'image' => 'required|mimetypes:image/jpeg,image/png|max:2048',
-            'email' => 'required|email:rfc,dns',
+            'email' => 'required|email:rfc,dns|unique:email',
             'password' => 'required|max:100|min:4',
 
         ];
@@ -102,22 +103,15 @@ class UserController extends Controller
         } else {
             $request->status = 0;
         }
-    
 
-        // dd($request->status);
-        // if ($validator->fails()) {
-        //     return redirect()->back()
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
         $user = User::where('email', $request->email)->get();
 
-        if (isset($user[0]['email'])) { //có dữ liệu
-            // dd($user);
-            $validator = $request->validate([
-                'email' => 'unique:email',
-            ]);
-        }
+        // if (isset($user[0]['email'])) { //có dữ liệu
+        //     // dd($user);
+        //     $validator = $request->validate([
+        //         'email' => 'unique:email',
+        //     ]);
+        // }
 
         $pathAvatar = $request->file('image')->store('public/users');
         $pathAvatar = str_replace("public/", "", $pathAvatar);
