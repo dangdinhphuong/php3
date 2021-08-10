@@ -99,7 +99,9 @@ Route::middleware('login_manage')->name('admin.')->prefix('admin/', )->group(fun
  
  Route::middleware('login_manage')->group(function () {
  Route::post('add/product', 'frontend\CheckoutController@add_product')->name('addproduct'); 
+ Route::post('delete', 'frontend\CheckoutController@delete')->name('delete'); 
  Route::get('checkout/cart', 'frontend\CheckoutController@index')->name('checkout'); 
+ Route::post('order', 'frontend\OderController@create')->name('order'); 
  });
 
 

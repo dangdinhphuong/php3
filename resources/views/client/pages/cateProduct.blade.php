@@ -46,7 +46,7 @@
                                     </div>
                                     <div class="item-info-product text-center border-top mt-4">
                                         <div class="d-flex  flex-column bd-highlight mb-3" style="height: 200px;">
-                                            <h4 class="mb-auto  p-2 bd-highlight"> <a href="single.html">{{$products->name}}</a></h4>
+                                            <h4 class="mb-auto  p-2 bd-highlight"> <a href="{{route('product_detail').'?pr='.$products->slug}}">{{$products->name}}</a></h4>
                                             <div class="p-2 pl-2 bd-highlight info-product-price" style="text-align: center">
                                                 <span class="item_price" style="font-weight: bold;text-align: center;">{{$products->competitive_price_last_sale}}</span><br>
                                                 @if($products->discounts!==0)

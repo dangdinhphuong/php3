@@ -71,7 +71,7 @@
 					<div class="product-single-w3l">
                         <p class="my-3">
 							<i class=" mr-2">
-                                <img src="{{asset('storage/images/branches/'.$product->branch->image)}}"style="width: 100px;" alt="">
+                                <img src="{{asset('storage/images/branches/'.$product->branch->image)}}"style="width: 50px; " alt="">
                             </i>
 							<label>Được bảo trợ sản phẩm bởi {{$product->branch->name}}</label> </p>
 						<ul >
@@ -89,14 +89,14 @@
 					<div class="occasion-cart">
 						<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
 							@if (Auth::check())
-							<form action="#" method="post">
+							<form action="">
 								@csrf
 								<input type="hidden" value="{{ $product->id }}"
 									name="id">
-								<input value="Thêm sản phẩm" class="button btn add submit" />
+								<input type="button" value="Thêm sản phẩm" class="button btn add submit" />
 							</form>
 							@else
-							<input value="Mua sản phẩm"class="button btn add submit login_model" />
+							<input  type="button" value="Mua sản phẩm"class="button btn add submit login_model" />
 								
 
 						    @endif

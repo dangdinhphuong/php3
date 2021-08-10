@@ -66,23 +66,26 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // validator
-  
+ 
         $rules = [
             'name' => 'required|max:100|min:4',
+            'address' => 'required|max:200|min:4',
             'phone_number' => 'required|min:9|numeric',
             'profile' => 'required|max:500|min:4',
             'image' => 'required|mimetypes:image/jpeg,image/png|max:2048',
-            'email' => 'required|email:rfc,dns|unique:email',
+            'email' => 'required|email:rfc,dns|unique:users,email',
             'password' => 'required|max:100|min:4',
 
         ];
         $messages = [
             'name.required' => 'Mời chọn tên người dùng!',
-            'name.max' => 'tên người dùng không quá 100 ký tự!',
-            'name.min' => 'tên người dùng  ít nhất 4 ký tự!',
+            'name.max' => 'Tên người dùng không quá 100 ký tự!',
+            'name.min' => 'Tên người dùng  ít nhất 4 ký tự!',
+            'address.required' => 'Mời chọn Địa chỉ người dùng!',
+            'address.max' => 'Địa chỉ người dùng không quá 100 ký tự!',
+            'address.min' => 'Địa chỉ người dùng  ít nhất 4 ký tự!',
             'phone_number.required' => 'Mời nhập số điện thoại',
             'phone_number.min' => 'số điện thoại ít nhất 9 chữ số',
-
             'phone_number.numeric' => 'số điện thoại không đúng',
             'profile.required' => 'Mời nhập mô tả người dùng!',
             'profile.max' => 'Mô tả  không quá 500 ký tự!',
@@ -96,27 +99,22 @@ class UserController extends Controller
 
         ];
 
-        $validator = $request->validate($rules, $messages);
-       
+       $request->validate($rules, $messages);
+  
         if ($request->status == "on") {
             $request->status = 1;
         } else {
             $request->status = 0;
         }
 
-        $user = User::where('email', $request->email)->get();
+//        $user = User::where('email', $request->email)->get();
 
-        // if (isset($user[0]['email'])) { //có dữ liệu
-        //     // dd($user);
-        //     $validator = $request->validate([
-        //         'email' => 'unique:email',
-        //     ]);
-        // }
 
-        $pathAvatar = $request->file('image')->store('public/users');
-        $pathAvatar = str_replace("public/", "", $pathAvatar);
+      
         try {
             DB::beginTransaction();
+            $pathAvatar = $request->file('image')->store('public/users');
+            $pathAvatar = str_replace("public/", "", $pathAvatar);
             $user = $this->user->create([
                 'name' => $request->name,
                 'phone_number' => $request->phone_number,
@@ -128,6 +126,7 @@ class UserController extends Controller
                 'register_at' => date('Y-m-d'),
                 'last_login' => date('Y-m-d'),
                 'status' => $request->status,
+                'address' => $request->address,
             ]);
 
             $user->roles()->attach($request->role_id); // upload create array to roles ===> 'attach'
@@ -181,6 +180,7 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required|max:100|min:4',
+            'address' => 'required|max:200|min:4',
             'phone_number' => 'required|min:9|numeric',
             'profile' => 'required|max:500|min:4',
             'image' => 'mimetypes:image/jpeg,image/png|max:2048',
@@ -192,7 +192,9 @@ class UserController extends Controller
             'name.min' => 'tên người dùng  ít nhất 4 ký tự!',
             'phone_number.required' => 'Mời nhập số điện thoại',
             'phone_number.min' => 'số điện thoại ít nhất 9 chữ số',
-
+            'address.required' => 'Mời chọn Địa chỉ người dùng!',
+            'address.max' => 'Địa chỉ người dùng không quá 100 ký tự!',
+            'address.min' => 'Địa chỉ người dùng  ít nhất 4 ký tự!',
             'phone_number.numeric' => 'số điện thoại không đúng',
             'profile.required' => 'Mời nhập mô tả người dùng!',
             'profile.max' => 'Mô tả  không quá 500 ký tự!',
@@ -237,16 +239,17 @@ class UserController extends Controller
         }
         $pathAvatar = "";
 
-        if ($request->file('image') != null) {
-            unlink("storage/" . $user->image);
-            $pathAvatar = $request->file('image')->store('public/users');
-            $pathAvatar = str_replace("public/", "", $pathAvatar);
-        } else {
-            $pathAvatar = $user->image;
-            // dd($pathAvatar);
-        }
+
         try {
             DB::beginTransaction();
+            if ($request->file('image') != null) {
+                unlink("storage/" . $user->image);
+                $pathAvatar = $request->file('image')->store('public/users');
+                $pathAvatar = str_replace("public/", "", $pathAvatar);
+            } else {
+                $pathAvatar = $user->image;
+                // dd($pathAvatar);
+            }
             $user->update([
                 'name' => $request->name,
                 'phone_number' => $request->phone_number,
@@ -258,6 +261,7 @@ class UserController extends Controller
                 'register_at' => date('Y-m-d'),
                 'last_login' => date('Y-m-d'),
                 'status' => $request->status,
+                'address' => $request->address,
             ]);
 
             $user->roles()->sync($request->role_id); // upload update array to role_user ===> 'sync'

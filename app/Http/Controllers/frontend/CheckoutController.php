@@ -25,8 +25,9 @@ class CheckoutController extends Controller
         $users = User::firstWhere("id", $users_login->id);
         $users->load('product');
         $users->load('carts');
-
         return view("client.pages.checkout", compact("users"));
+        
+   
     }
 
     public function add_product(Request $request)
@@ -40,25 +41,45 @@ class CheckoutController extends Controller
                 $request->id = (int)$request->id;
                 //  
                 $cart = carts::Where("user_id", $users_login->id)->Where("pro_id", $request->id)->first();
-               
+                // return response()->json(['errors' => $request->count]);
                 if ($cart) {
-                    $cart->quantity = (int)$cart->quantity+1;
-                   
-                    carts::Where("user_id", $users_login->id)->Where("pro_id", $request->id)->update([              
+                    $cart->quantity = ($request->count == null) ? (int)$cart->quantity + 1 : $request->count;
+                    $request->count = (int)$request->count;
+                    carts::Where("user_id", $users_login->id)->Where("pro_id", $request->id)->update([
                         'quantity' => $cart->quantity,
                     ]);
                     return response()->json(['success' => 'Thêm sản phẩm thành công']);
-                }
-                else{
-                     $this->carts->create([
+                } else {
+                    $this->carts->create([
                         'user_id' => $users_login->id,
                         'pro_id' => $request->id,
-                        'quantity' => 1,
+                        'quantity' => $request->count,
                     ]);
-                
-                return response()->json(['success' => 'Thêm sản phẩm thành công']);
+
+                    return response()->json(['success' => 'Thêm sản phẩm thành công']);
                 }
+            }
+            return response()->json(['errors' => 'Sản phẩm không tồn tại']);
+        }
+        return response()->json(['errors' => 'Yêu cầu đăng nhập']);
+    }
+    public function delete(Request $request)
+    {
+        $users_login = Auth::user();
+        // 
+        if (Auth::check()) {
+
+            $product = Product::firstWhere("id", $request->id);
+            if ($product) {
+                $request->id = (int)$request->id;
+                //  
+                $cart = carts::Where("user_id", $users_login->id)->Where("pro_id", $request->id)->delete();
+               // return response()->json(['success' => $cart]);            
+                if ($cart==1) {
                    
+                    return response()->json(['success' => 'Xóa sản phẩm thành công']);
+                }
+                return response()->json(['errors' => 'Sản phẩm không tồn tại']);
             }
             return response()->json(['errors' => 'Sản phẩm không tồn tại']);
         }

@@ -80,7 +80,7 @@
                                         <div class="item-info-product text-center border-top mt-4">
                                             <div class="d-flex  flex-column bd-highlight mb-3" style="height: 200px;">
                                                 <h4 class="mb-auto  p-2 bd-highlight"> <a
-                                                        href="single.html">{{ $products_DT[$i]->name }}</a></h4>
+                                                        href="{{ route('product_detail') . '?pr=' . $products_DT[$i]->slug }}">{{ $products_DT[$i]->name }}</a></h4>
                                                 <div class="p-2 pl-2 bd-highlight info-product-price"
                                                     style="text-align: center">
                                                     <span class="item_price"
@@ -95,11 +95,11 @@
                                                 <div
                                                     class="p-2 bd-highlight snipcart-details  top_brand_home_details item_add single-item hvr-outline-out">
                                                     @if (Auth::check())
-                                                        <form action="#" method="post">
+                                                        <form action="">
                                                             @csrf
                                                             <input type="hidden" value="{{ $products_DT[$i]->id }}"
                                                                 name="id">
-                                                            <input value="Thêm sản phẩm"
+                                                            <input type="button" value="Thêm sản phẩm"
                                                                 class="button btn add submit" />
                                                         </form>
                                                     @else
@@ -165,11 +165,11 @@
                                                 <div
                                                     class="p-2 bd-highlight snipcart-details  top_brand_home_details item_add single-item hvr-outline-out">
                                                     @if (Auth::check())
-                                                    <form action="#" method="post">
+                                                    <form action="">
                                                         @csrf
                                                         <input type="hidden" value="{{ $products_sale->id }}"
                                                             name="id">
-                                                        <input value="Thêm sản phẩm" class="button btn add submit" />
+                                                        <input type="button" value="Thêm sản phẩm" class="button btn add submit" />
                                                     </form>
                                                     @else
                                                     <input value="Thêm sản phẩm"
@@ -234,14 +234,14 @@
                                                 <div
                                                     class="p-2 bd-highlight snipcart-details  top_brand_home_details item_add single-item hvr-outline-out">
                                                     @if (Auth::check())
-                                                    <form action="#" method="post">
+                                                    <form action="">
                                                         @csrf
                                                         <input type="hidden" value="{{ $products_DDGS->id }}"
                                                             name="id">
-                                                        <input value="Thêm sản phẩm" class="button btn add submit" />
+                                                        <input type="button" value="Thêm sản phẩm" class="button btn add submit" />
                                                     </form>
                                                     @else
-                                                    <input value="Thêm sản phẩm"
+                                                    <input  value="Thêm sản phẩm"
                                                         class="button btn add submit login_model" />
 
                                                 @endif

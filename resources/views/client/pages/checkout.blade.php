@@ -47,10 +47,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               
-                                @for($i=0;$i< $users->product()->count();$i++)
+
+                                @for ($i = 0; $i < $users->product()->count(); $i++)
                                     <tr>
-                                        <th scope="row"><i class="fas fa-trash-alt"></i></th>
+                                        <th scope="row" class="remote"><i class="fas fa-trash-alt"></i></th>
                                         <td style="width: 110px;">
                                             <img src="{{ asset('storage/' . $users->product[$i]->image) }}" alt=" "
                                                 style="width:100%">
@@ -71,14 +71,28 @@
                                         <td>
                                             <div class="quantity">
                                                 <div class="quantity-select">
-                                                    <div class="entry value-minus qty-increase">&nbsp;</div>
-                                                    <input type="tel" class="qty-input" id="quantity" value="{{ $users->carts[$i]->quantity }}">
-                                                    <div class="entry value-plus active qty-increase">&nbsp;</div>
+                                                    <form action="">
+                                                        @csrf
+                                                        <div class="entry value-minus qty-increase">&nbsp;</div>
+                                                        <input type="tel" class="qty-input" disabled id="quantity"
+                                                            value="{{ $users->carts[$i]->quantity }}">
+                                                        <input type="hidden" class="qty-input " id="price"
+                                                            value="{{ $users->product[$i]->price_discout }}">
+                                                        <input type="hidden" class="qty-input" id="id"
+                                                            value="{{ $users->product[$i]->id }}">
+                                                        <input type="hidden" class="qty-input price_g" id="total"
+                                                            value="{{ $users->carts[$i]->quantity * $users->product[$i]->price_discout }} ">
+
+                                                        <div class="entry value-plus active qty-increase">&nbsp;</div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
-                                            <p class="intended__final-prices">1.168.000đ</p>
+                                            <p class="intended__final-prices"
+                                                id="show_price{{ $users->product[$i]->id }}">
+                                                {{ number_format($users->carts[$i]->quantity * $users->product[$i]->price_discout, 0, '', '.') . ' đ' }}
+                                            </p>
                                         </td>
                                     </tr>
                                 @endfor
@@ -88,35 +102,29 @@
 
                     </div>
                     <div class="col-lg-3 mt-lg-0 mt-4 p-lg-0">
-                        <table class="table" style="background-color:#EEEEEE">
+                        <table class="table"
+                            style="background-color:#EEEEEE ;box-shadow: 2px 2px 2px 2px #888888;border-radius: 5%;">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
+                                    <th scope="col">Tạm tính</th>
+                                    <th scope="col" class="show_prices">0đ</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Giảm giá</th>
+                                    <th scope="col">0đ</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Tổng cộng</th>
+                                    <th scope="col"><span class="prices__value--final show_prices">0đ</span></th>
+                                </tr>
+                                <tr>
+
+                                    <th scope="col" colspan="2" class="prices__value"><i>(Đã bao gồm VAT nếu có)</i></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
-                            </tbody>
+
+
+
                         </table>
                     </div>
                 </div>
@@ -125,24 +133,26 @@
             <div class="checkout-left">
                 <div class="address_form_agile mt-sm-5 mt-4">
                     <h4 class="mb-sm-4 mb-3">Thông tin nhận hàng</h4>
-                    <form action="payment.html" method="post" class="creditly-card-form agileinfo_form">
+                    <form action="{{route("order")}}" method="post" class="creditly-card-form agileinfo_form">
+                        @csrf
+                       
                         <div class="creditly-wrapper wthree, w3_agileits_wrapper">
                             <div class="information-wrapper">
                                 <div class="first-row">
                                     <div class="controls form-group">
                                         <input class="billing-address-name form-control" type="text" name="name"
-                                            placeholder="Tên người nhận" required="">
+                                            placeholder="Tên người nhận" value="{{Auth::user()->name}}" required="">
                                     </div>
                                     <div class="w3_agileits_card_number_grids">
                                         <div class="w3_agileits_card_number_grid_left form-group">
                                             <div class="controls">
                                                 <input type="text" class="form-control"
-                                                    placeholder="Số điện thoại người nhận" name="number" required="">
+                                                    placeholder="Số điện thoại người nhận" value="{{Auth::user()->phone_number}}" name="number" required="">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="controls form-group">
-                                        <input type="text" class="form-control" placeholder="Địa chỉ nhận hàng" name="city"
+                                        <input type="text" class="form-control" value="{{Auth::user()->address}}" placeholder="Địa chỉ nhận hàng" name="city"
                                             required="">
                                     </div>
 
@@ -157,6 +167,22 @@
     </div>
     <!-- //checkout page -->
     <style>
+        .prices__value {
+            font-weight: bold;
+            font-style: normal;
+            display: block;
+            font-size: 12px;
+            color: rgb(51, 51, 51);
+            margin-top: 3px;
+        }
+
+        .prices__value--final {
+            color: rgb(254, 56, 52);
+            font-size: 22px;
+            font-weight: 400;
+            text-align: right;
+        }
+
         .qty-input {
             border: none;
             background: transparent;
@@ -188,7 +214,7 @@
 
 
         .intended__name {
-           
+
             display: -webkit-box;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -221,24 +247,114 @@
             @endsection
 
             @section('javascript')
+                <script src="{{ asset('asset_fe/js/product/addproduct.js') }}"></script>
                 <!-- quantity -->
                 <script>
+                    $('.show_prices').text(total());
+                    delete
+                    $('.remote').on('click', function() {
+                        swal({
+                                title: "Bạn có chắc xóa không?",
+                                icon: "warning",
+                                buttons: true,
+                                dangerMode: true,
+                            })
+                            .then((willDelete) => {
+                                if (willDelete) {
+                                    let id = $(this).parent().find('#id').val();
+                                    let token = $(this).parent().find('input[name=_token]').val();
+                                    delete_cart("{{ route('delete') }}", id, token);
+                                } 
+                            });
+
+                    });
                     $('.value-plus').on('click', function() {
-                        let quantity=$(this).parent().find('#quantity').val();
-                        $(this).parent().find('#quantity').val(Number(quantity)+1);
-                        // var divUpd = $(this).parent().find('.value'),
-                        //     newVal = parseInt(divUpd.text(), 10) + 1;
-                        // console.log(divUpd.text());
-                        // divUpd.text(newVal);
+                        let quantity = $(this).parent().find('#quantity').val();
+                        let price = $(this).parent().find('#price').val();
+                        let id = $(this).parent().find('#id').val();
+                        let show_price = $('#show_price' + id);
+                        let token = $(this).parent().find('input[name=_token]').val();
+                        let count = Number(quantity) + 1;
+                        let total_money = (count * price).toLocaleString('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND'
+                        });
+                        $(this).parent().find('#quantity').val(count);
+                        show_price.text(total_money);
+                        updatecate("{{ route('addproduct') }}", id, token, count);
+
+                        $(this).parent().find('#total').val((count * price));
+                        var allinputs = document.querySelectorAll('.price_g');
+                        var myLength = allinputs.length;
+                        var input;
+                        var total = 0;
+                        for (var i = 0; i < myLength; ++i) {
+                            input = allinputs[i];
+
+                            total = (total + Number(input.value));
+                        }
+                        total = total.toLocaleString('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND'
+                        });
+                        $('.show_prices').text(total);
+
+
                     });
 
                     $('.value-minus').on('click', function() {
-                        let quantity=$(this).parent().find('#quantity').val();
-                        if (Number(quantity) >= 2)  $(this).parent().find('#quantity').val(Number(quantity)-1);
-                        // var divUpd = $(this).parent().find('.value'),
-                        //     newVal = parseInt(divUpd.text(), 10) - 1;
-                        
+                        let quantity = $(this).parent().find('#quantity').val();
+                        let price = $(this).parent().find('#price').val();
+                        let id = $(this).parent().find('#id').val();
+                        let show_price = $('#show_price' + id);
+                        let token = $(this).parent().find('input[name=_token]').val();
+                        let count = Number(quantity) - 1;
+
+                        if (count >= 1) {
+                            $(this).parent().find('#quantity').val(count);
+                            let total_money = (count * price).toLocaleString('vi-VN', {
+                                style: 'currency',
+                                currency: 'VND'
+                            });
+                            show_price.text(total_money);
+
+                            updatecate("{{ route('addproduct') }}", id, token, count);
+
+
+                            $(this).parent().find('#total').val((count * price));
+                            var allinputs = document.querySelectorAll('.price_g');
+                            var myLength = allinputs.length;
+                            var input;
+                            var total = 0;
+                            for (var i = 0; i < myLength; ++i) {
+                                input = allinputs[i];
+
+                                total = (total + Number(input.value));
+                            }
+                            total = total.toLocaleString('vi-VN', {
+                                style: 'currency',
+                                currency: 'VND'
+                            });
+                            $('.show_prices').text(total);
+                        }
+
                     });
+
+                    function total() {
+                        var allinputs = document.querySelectorAll('.price_g');
+                        var myLength = allinputs.length;
+                        var input;
+                        var total = 0;
+                        for (var i = 0; i < myLength; ++i) {
+                            input = allinputs[i];
+
+                            total = (total + Number(input.value));
+                        }
+                        return total.toLocaleString('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND'
+                        });
+                    }
                 </script>
                 <!--quantity-->
             @endsection

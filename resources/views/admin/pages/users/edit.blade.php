@@ -29,6 +29,11 @@ Sửa thông tin người dùng
                 <code> {{ $errors->first('email') }} </code> @if (session('erros'))<code> {{ session('erros') }} </code>@endif
             </div>
             <div class="form-group">
+                <label for="exampleInputEmail1">Địa chỉ </label>
+                <input type="text" name="address"value="{{$user->address}}" class="form-control" id="exampleInputEmail1" placeholder="Nhập địa chỉ  người dùng">
+                <code> {{ $errors->first('address') }} </code> @if (session('erros'))<code> {{ session('erros') }} </code>@endif
+            </div>
+            <div class="form-group">
                 <label for="exampleInputEmail1">Ảnh đại diện</label>
                 <div class="input-group">
                     <div class="custom-file d-flex justify-content-between">

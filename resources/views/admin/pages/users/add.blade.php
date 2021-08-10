@@ -18,11 +18,15 @@ Thêm mới người dùng
                 <code> {{ $errors->first('name') }} </code>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Địa chỉ email</label>
+                <label for="exampleInputEmail1">Email</label>
                 <input type="email" name="email"value="{{ old('email') }}" class="form-control" id="exampleInputEmail1" placeholder="Nhập địa chỉ email người dùng">
                 <code> {{ $errors->first('email') }} </code> @if (session('erros'))<code> {{ session('erros') }} </code>@endif
             </div>
-
+            <div class="form-group">
+                <label for="exampleInputEmail1">Địa chỉ </label>
+                <input type="text" name="address"value="{{ old('address') }}" class="form-control" id="exampleInputEmail1" placeholder="Nhập địa chỉ  người dùng">
+                <code> {{ $errors->first('address') }} </code> @if (session('erros'))<code> {{ session('erros') }} </code>@endif
+            </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Ảnh đại diện</label>
                 <div class="input-group">

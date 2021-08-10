@@ -27,6 +27,7 @@ class User extends Authenticatable
         'register_at',
         'last_login',
         'status',
+        'address',
     ];
 
     /**

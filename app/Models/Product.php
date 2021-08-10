@@ -43,23 +43,30 @@ class Product extends Model
      // Chỉnh sửa dữ liệu đầu ra khi đối tượng gọi thuộc tính. Trường hợp muốn lấy dữ liệu gốc thì dùng hàm getRawOriginal('attributeName')
     // Accessor get{AttributeName}Attribute
     public function getPriceAttribute() {
-        $price =number_format($this->attributes['price'], 0, '', ',') . ' VNĐ';
+        $price =number_format($this->attributes['price'], 0, '', '.') . ' đ';
         return $price;
     }
     public function getCompetitivePriceAttribute() {
-        $competitive_price =number_format($this->attributes['competitive_price'], 0, '', ',') . ' VNĐ';
+        $competitive_price =number_format($this->attributes['competitive_price'], 0, '', '.') . ' đ';
         return $competitive_price;
     }
     public function getCompetitivePriceLastSaleAttribute() {
-        $competitive_priceLastSale =number_format($this->attributes['competitive_price'], 0, '', ',') . ' VNĐ';
+        $competitive_priceLastSale =number_format($this->attributes['competitive_price'], 0, '', '.') . ' đ';
         if($this->attributes['discount']>=1){
             $competitive_priceLastSale=$this->attributes['competitive_price']-(($this->attributes['discount']/100)*$this->attributes['competitive_price']);
-            $competitive_priceLastSale =number_format($competitive_priceLastSale, 0, '', ',') . ' VNĐ';
+            $competitive_priceLastSale =number_format($competitive_priceLastSale, 0, '', '.') . ' đ';
         }
         return $competitive_priceLastSale;
     }
 
-    
+    public function getPriceDiscoutAttribute() {
+        $price_discout =$this->attributes['competitive_price'];
+        if($this->attributes['discount']>=1){
+            $price_discout=$this->attributes['competitive_price']-(($this->attributes['discount']/100)*$this->attributes['competitive_price']);
+            $price_discout =$price_discout;
+        }
+        return $price_discout;
+    }
     public function getDiscountAttribute() {
         $discount ="- ".$this->attributes['discount']. ' %';
         return $discount;
