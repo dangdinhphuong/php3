@@ -156,7 +156,7 @@ class ProductController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         $model = Product::find($id);
-       
+       //dd($request->file('image'));
         if ($model) {
             $model->load('image_products');
             $request->discount = ($request->discount != null) ? $request->discount : 0;
