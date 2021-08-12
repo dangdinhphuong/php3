@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -54,6 +55,9 @@ class User extends Authenticatable
     
 }
     
+public function check(){
+    dd(auth()->user());
+}
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'roles_users', 'user_id', 'role_id');
@@ -61,5 +65,20 @@ class User extends Authenticatable
     public function product()
     {
         return $this->belongsToMany(Product::class, 'carts','user_id', 'pro_id');
+    }
+    public function checkPermissionsAccess($permissionsCheck)
+    {
+        $roles = auth()->user()->roles;
+   
+        foreach ($roles as $role) {
+            
+            $permissions = $role->permissions;
+            
+            if ($permissions->contains('key_code', $permissionsCheck)) {
+                return true;
+            }
+            
+        }
+        return false;
     }
 }

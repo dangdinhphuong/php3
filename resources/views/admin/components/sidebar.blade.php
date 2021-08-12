@@ -6,11 +6,11 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{asset('asset_be/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2"
-                    alt="User Image">
+                {{-- <img src="{{asset('asset_be/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2"alt="User Image"> --}}
+                {{-- <img src="{{ asset('storage/' . Auth::user()->image) }}" class="img-circle elevation-2"alt="User Image" style="background: #fff"> --}}
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                {{-- <a href="{{route("/")}}" class="d-block">{{ Auth::user()->name }}</a> --}}
             </div>
         </div>
         <!-- Sidebar Menu -->
@@ -73,6 +73,23 @@
                                 <p>Thêm mới sản phẩm </p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Đơn hàng
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin.order.trackorder')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tất cả đơn hàng</p>
+                            </a>
+                        </li>                      
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -184,30 +201,7 @@
 
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Hình ảnh sản phẩm
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Tất cả ảnh</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Thêm ảnh</p>
-                            </a>
-                        </li>
-
-                    </ul>
-                </li>
+               
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

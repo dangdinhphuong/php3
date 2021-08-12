@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\carts;
 use App\Models\Product;
-
+use App\Models\ShipmentDetails;
 class CheckoutController extends Controller
 {
     private $carts;
@@ -21,11 +21,11 @@ class CheckoutController extends Controller
     {
         $users_login = Auth::user();
 
-        // $cart= carts::where("user_id",$users->id)->get();
+        $shipmentDetails= ShipmentDetails::firstWhere("user_id",$users_login->id);
         $users = User::firstWhere("id", $users_login->id);
         $users->load('product');
         $users->load('carts');
-        return view("client.pages.checkout", compact("users"));
+        return view("client.pages.checkout", compact("users","shipmentDetails"));
         
    
     }

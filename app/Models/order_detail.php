@@ -16,4 +16,8 @@ class order_detail extends Model
         'quantity',
         'image',
     ];
+    public function getPriceVAttribute() {
+        $price_v =number_format($this->attributes['price'], 0, '', '.') . ' đ';
+        return $price_v;
+    }
 }

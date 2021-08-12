@@ -3,7 +3,7 @@ return [
     'order' => [
         'status1' => [
            0=>"Đang xử lý",
-           1=>"Đang giao hàng",
+           1=>"Đang chuẩn bị hàng",
            2=>"Đang giao hàng",
            3=>"Đã hoàn thành",
            4=>"Đã hủy",

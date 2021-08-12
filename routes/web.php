@@ -15,6 +15,7 @@ use App\Http\Controllers\UserController;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |login_manage
+ 
 */
 
 
@@ -29,16 +30,14 @@ Route::middleware('login_manage')->name('admin.')->prefix('admin/', )->group(fun
         Route::post('update', [CategoryController::class, 'update'])->name('update');
         Route::get('delete/{id}', [CategoryController::class, 'destroy'])->name('delete');
     });
-
     Route::name('products.')->prefix('products/')->group(function () {
-        Route::get('', [ProductController::class, 'index'])->name('index');
-        Route::get('create', [ProductController::class, 'create'])->name('create');
+        Route::get('', [ProductController::class, 'index'])->name('index')->middleware('can:products_list');
+        Route::get('create', [ProductController::class, 'create'])->name('create')->middleware('can:products_add');
         Route::post('store', [ProductController::class, 'store'])->name('store');
-        Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit');
+        Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit')->middleware('can:products_edit');
         Route::post('update/{id}', [ProductController::class, 'update'])->name('update');
-        Route::get('delete/{id}', [ProductController::class, 'destroy'])->name('delete');
+        Route::get('delete/{id}', [ProductController::class, 'destroy'])->name('delete')->middleware('can:products_delete');
     });
-
     Route::name('images.')->prefix('images/')->group(function () {
         Route::get('', [ImageController::class, 'index'])->name('index');
         Route::get('create', [ImageController::class, 'create'])->name('create');
@@ -47,7 +46,6 @@ Route::middleware('login_manage')->name('admin.')->prefix('admin/', )->group(fun
         Route::post('update', [ImageController::class, 'update'])->name('update');
         Route::get('delete/{id}', [ImageController::class, 'destroy'])->name('delete');
     });
-
     Route::name('branches.')->prefix('branches/')->group(function () {
         Route::get('', [BranchController::class, 'index'])->name('index');
         Route::get('create', [BranchController::class, 'create'])->name('create');
@@ -89,6 +87,10 @@ Route::middleware('login_manage')->name('admin.')->prefix('admin/', )->group(fun
         Route::post('store', 'SliderController@store')->name('slider.store');
         Route::post('update/{id}', 'SliderController@update')->name('slider.update');
     });
+    Route::prefix('order')->group(function () {
+        Route::get('/', 'TrackorderController@index')->name('order.trackorder');
+        Route::post('order/update/{id}', 'TrackorderController@update')->name('order.update'); 
+    });
 });
 
 
@@ -102,6 +104,8 @@ Route::middleware('login_manage')->name('admin.')->prefix('admin/', )->group(fun
  Route::post('delete', 'frontend\CheckoutController@delete')->name('delete'); 
  Route::get('checkout/cart', 'frontend\CheckoutController@index')->name('checkout'); 
  Route::post('order', 'frontend\OderController@create')->name('order'); 
+ Route::get('order/history', 'TrackorderController@show')->name('trackorder');
+ Route::get('order/view/{id}', 'TrackorderController@show_detail')->name('order.view');
  });
 
 
