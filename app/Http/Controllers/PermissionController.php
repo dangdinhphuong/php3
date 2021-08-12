@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use App\Models\User;
 class PermissionController extends Controller
 {
     /**
@@ -17,6 +17,7 @@ class PermissionController extends Controller
     {
         $permissions_parent = Permission::where('parent_id', 0)->get();
      
+        
         return view('admin.pages.permission.index', compact('permissions_parent'));
     }
 

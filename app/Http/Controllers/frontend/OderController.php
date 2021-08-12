@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 use App\Models\User;
-use App\Models\carts;
-use App\Models\Product;
 use App\Models\order;
 use App\Models\order_detail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Models\ShipmentDetails;
 
 class OderController extends Controller
 {
@@ -47,47 +46,64 @@ class OderController extends Controller
 
         $request->validate($rules, $messages);
         $users_login = Auth::user();
+        $shipmentDetails = ShipmentDetails::firstWhere("user_id", $users_login->id);
+        
         $users = User::firstWhere("id", $users_login->id);
         $users->load('product');
         $users->load('carts');
+        
         try {
             DB::beginTransaction();
-        if (count($users->product) >= 1) {
-
-            $order = $this->order->create([
-                'user_id' => $users_login->id,
-                'status' => config("order.order.status2.0"),
-            ]);
-            if (!file_exists('storage/images/order')) {
-                mkdir('storage/images/order', 0777, true);
-            }
-            for ($i = 0; $i < count($users->product); $i++) {
-            
-                $image_product = str_replace("images/products/", "images/order/", $users->product[$i]->image); 
-                //dd($image_product);
-                if (file_exists('storage/' . $users->product[$i]->image)) {
-                    if (!file_exists("storage/" . $image_product)) {
-                        copy('storage/' . $users->product[$i]->image, "storage/" . $image_product);
-                    }
-                }
-                $this->order_detail->create([
-                    'order_id' => $order->id,                  
-                    'name'=>$users->product[$i]->name,
-                    'slug'=>$users->product[$i]->slug,
-                    'price'=>$users->product[$i]->price_discout,
-                    'quantity'=>$users->carts[$i]->quantity,
-                    'image'=>$image_product,                         
+            if (count($users->product) >= 1) {
+                $order = $this->order->create([
+                    'user_id' => $users_login->id,
+                    'status' => config("order.order.status2.0"),
                 ]);
-                $users->product[$i]->delete();
+                if (!file_exists('storage/images/order')) {
+                    mkdir('storage/images/order', 0777, true);
+                }
+                for ($i = 0; $i < count($users->product); $i++) {
+                    $image_product = str_replace("images/products/", "images/order/".rand(1000, 99999999), $users->product[$i]->image);
+                    //dd($image_product);
+                    if (file_exists('storage/' . $users->product[$i]->image)) {
+                        if (!file_exists("storage/" . $image_product)) {
+                            copy('storage/' . $users->product[$i]->image, "storage/" . $image_product);
+                        }
+                    }
+                    $this->order_detail->create([
+                        'order_id' => $order->id,
+                        'name' => $users->product[$i]->name,
+                        'slug' => $users->product[$i]->slug,
+                        'price' => $users->product[$i]->price_discout,
+                        'quantity' => $users->carts[$i]->quantity,
+                        'image' => $image_product,
+                    ]);
+                    if ($shipmentDetails) {
+                        $shipmentDetails->update([
+                            'name' => $request->name,
+                             'order_id' => $order->id,
+                            'phone_number' => $request->phone_number,
+                            'address' => $request->address,
+                            'user_id' => $users_login->id,
+                        ]);
+                    } else {
+                        ShipmentDetails::create([
+                            'name' => $request->name,
+                             'order_id' => $order->id,
+                            'phone_number' => $request->phone_number,
+                            'address' => $request->address,
+                            'user_id' => $users_login->id,
+                        ]);
+                    }
+                    $users->carts[$i]->delete();
+                }
             }
-           
+            DB::commit();
+            return redirect()->back()->with('status', 'Mua hàng thành công !');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error('message :', $exception->getMessage() . '--line :' . $exception->getLine());
         }
-        DB::commit();
-        return redirect()->back()->with('status', 'Mua hàng thành công !');
-    } catch (Exception $exception) {
-        DB::rollBack();
-        Log::error('message :', $exception->getMessage() . '--line :' . $exception->getLine());
-    }
         return redirect()->back();
     }
 }

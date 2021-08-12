@@ -141,26 +141,26 @@
                                 <div class="first-row">
                                     <div class="controls form-group">
                                         <input class="billing-address-name form-control" type="text" name="name"
-                                            placeholder="Tên người nhận" value="{{Auth::user()->name}}" required="">
+                                            placeholder="Tên người nhận" value="{{($shipmentDetails)?$shipmentDetails->name:''}}" required="">
                                     </div>
                                     <code> {{ $errors->first('name') }} </code>
                                     <div class="w3_agileits_card_number_grids">
                                         <div class="w3_agileits_card_number_grid_left form-group">
                                             <div class="controls">
                                                 <input type="text" class="form-control"
-                                                    placeholder="Số điện thoại người nhận" value="{{Auth::user()->phone_number}}" name="phone_number" required="">
+                                                    placeholder="Số điện thoại người nhận" value="{{($shipmentDetails)?$shipmentDetails->phone_number:''}}" name="phone_number" required="">
                                             </div>
                                             <code> {{ $errors->first('phone_number') }} </code>
                                         </div>
                                     </div>
                                     <div class="controls form-group">
-                                        <input type="text" class="form-control" value="{{Auth::user()->address}}" placeholder="Địa chỉ nhận hàng" name="address"
+                                        <input type="text" class="form-control" value="{{($shipmentDetails)?$shipmentDetails->address:''}}" placeholder="Địa chỉ nhận hàng" name="address"
                                             required="">
                                     </div>
                                     <code> {{ $errors->first('address') }} </code>
 
                                 </div>
-                                <button class="submit check_out btn">Mua hàng</button>
+                                <button class="submit check_out btn" {{ $users->product()->count()<=0?"disabled":'' }} >Mua hàng</button>
                             </div>
                         </div>
                     </form>

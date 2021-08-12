@@ -454,9 +454,12 @@
                     <div class="form-group">
                         <label class="col-form-label">Nhập mật khẩu</label>
                         <input type="password" class="form-control" placeholder="Password" id="password" required="">
+                        <a href="{{route('auth.forgot')}}"><code>Quên mật khẩu</code></a>
+                        
                     </div>
                     <div class="right-w3l">
                         <input type="submit" class="form-control" value="Log in">
+                        
                     </div>
                     <div class="sub-w3l">
                         <div class="custom-control custom-checkbox mr-sm-2">

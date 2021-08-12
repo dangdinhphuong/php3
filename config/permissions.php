@@ -13,6 +13,12 @@ return [
         'Category',
         'products',
         'blog',
-        'role'
+        'role',
+        'order',
+        'branch',
+        'permission',
+        'user',
+        'slider',
+        
     ]
 ];
