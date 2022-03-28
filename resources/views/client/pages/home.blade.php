@@ -1,8 +1,6 @@
 @extends('client.layout')
 @section('title', 'Cửa hàng điện tử')
-
 @section('content')
-
 
 <!-- banner -->
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">

@@ -14,7 +14,7 @@
                             <i class="fas fa-map-marker mr-2"></i>Select Location</a>
                     </li>
                     <li class="text-center border-right text-white">
-                        <a href="#" data-toggle="modal" data-target="#exampleModal" class="text-white">
+                        <a href="{{ route('trackorder') }}"  class="text-white">
                             <i class="fas fa-truck mr-2"></i>Track Order</a>
                     </li>
                     <li class="text-center border-right text-white">

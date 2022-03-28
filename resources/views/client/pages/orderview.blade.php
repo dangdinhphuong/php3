@@ -45,7 +45,7 @@
                                     <tr>
 
                                         <td colspan="4">
-                                            <a href="{{ $order_detail->slug }}" class="d-flex justify-content-start"
+                                            <a href="{{ route('product_detail') . '?pr=' . $order_detail->slug }}" class="d-flex justify-content-start"
                                                 style="color:black">
                                                 <img class="pr-5" src="{{ asset('storage/' . $order_detail->image) }}"
                                                     alt=" " style="width:15%">
