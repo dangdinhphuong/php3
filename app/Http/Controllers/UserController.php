@@ -23,14 +23,14 @@ class UserController extends Controller
         $this->role = $role;
     }
     public function index()
-    {  
-        $roles = $this->role->all();  
-    
+    {
+        $roles = $this->role->all();
+
         if(count($roles)>0){
-        $id = isset($_REQUEST['roles_id']) == true ? $_REQUEST['roles_id'] : $roles[0]->id;  
-        $status = isset($_REQUEST['status']) == true ? $_REQUEST['status'] : "";     
-        $search = isset($_REQUEST['name']) == true ? $_REQUEST['name'] : ""; 
-        $pagenumber = isset($_REQUEST['page']) == true ? $_REQUEST['page'] : 1; 
+        $id = isset($_REQUEST['roles_id']) == true ? $_REQUEST['roles_id'] : $roles[0]->id;
+        $status = isset($_REQUEST['status']) == true ? $_REQUEST['status'] : "";
+        $search = isset($_REQUEST['name']) == true ? $_REQUEST['name'] : "";
+        $pagenumber = isset($_REQUEST['page']) == true ? $_REQUEST['page'] : 1;
         $pagesize = 4; // số lượng bản ghi trong một
         $offset = ($pagenumber - 1) * $pagesize;
 
@@ -46,7 +46,7 @@ class UserController extends Controller
         $data['totalPage'] = intval(ceil(count($users->get()) / $pagesize));
         $users =  $users->take($pagesize)->skip($offset)->get();
         return view('admin.pages.users.index', compact('roles',"users",'data'));}
-        
+
         else{
             return redirect("admin/role/index")->with('message', 'Mời thêm chức vụ !');
         }
@@ -66,7 +66,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // validator
- 
+
         $rules = [
             'name' => 'required|max:100|min:4',
             'address' => 'required|max:200|min:4',
@@ -100,7 +100,7 @@ class UserController extends Controller
         ];
 
        $request->validate($rules, $messages);
-  
+
         if ($request->status == "on") {
             $request->status = 1;
         } else {
@@ -110,7 +110,7 @@ class UserController extends Controller
 //        $user = User::where('email', $request->email)->get();
 
 
-      
+
         try {
             DB::beginTransaction();
             $pathAvatar = $request->file('image')->store('public/users');
@@ -243,7 +243,11 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
             if ($request->file('image') != null) {
-                unlink("storage/" . $user->image);
+                $filePath = storage_path('app/' . $user->image);
+
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
                 $pathAvatar = $request->file('image')->store('public/users');
                 $pathAvatar = str_replace("public/", "", $pathAvatar);
             } else {
@@ -266,10 +270,14 @@ class UserController extends Controller
 
             $user->roles()->sync($request->role_id); // upload update array to role_user ===> 'sync'
             DB::commit();
-            return redirect()->back()->with('status', 'Sửa thông tin ' . $request->name . ' thành công !');
+            return redirect()->route('admin.user.index')->with('status', 'Sửa thông tin ' . $request->name . ' thành công !');
         } catch (Exception $exception) {
             DB::rollBack();
-            Log::error('message :', $exception->getMessage() . '--line :' . $exception->getLine());
+            Log::error('message :', [
+                'exception_message' => $exception->getMessage(),
+                'line' => $exception->getLine()
+            ]);
+            return redirect()->back()->with('error', $exception->getMessage());
         }
     }
 
@@ -282,7 +290,12 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user = $this->user->find($_REQUEST['id']);
-        unlink("storage/" . $user->image);
+
+        $filePath = storage_path('app/' . $user->image);
+
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
         $user->delete();
         return redirect()->back()->with('status', 'Bạn đã xóa' . $user->name . ' thành công !');
     }
